@@ -47,6 +47,7 @@ public class Paint extends JFrame{
             drawingEngine.addShape(lineSegment);
             lineSegment.generateKey();
             updateCombo(lineSegment);
+            drawingEngine.refresh();
         });
 
         squareButton.addActionListener(e -> {
@@ -64,6 +65,7 @@ public class Paint extends JFrame{
             }
             square=new Rectangle(values.get(0),values.get(1),values.get(2),values.get(2),"square");
             drawingEngine.addShape(square);
+            drawingEngine.refresh();
             square.generateKey();
             updateCombo(square);
         });
@@ -86,6 +88,7 @@ public class Paint extends JFrame{
             drawingEngine.addShape(circle);
             circle.generateKey();
             updateCombo(circle);
+            drawingEngine.refresh();
         });
 
         rectangleButton.addActionListener(e -> {
@@ -106,6 +109,7 @@ public class Paint extends JFrame{
             drawingEngine.addShape(rectangle);
             rectangle.generateKey();
             updateCombo(rectangle);
+            drawingEngine.refresh();
 
         });
 
