@@ -110,7 +110,6 @@ public class Paint extends JFrame{
         });
 
         deleteButton.addActionListener(e -> {
-
             Shape shape=searchShape(String.valueOf(comboBox1.getSelectedItem()) );
             if (shape!=null)
             {

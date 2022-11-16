@@ -18,13 +18,13 @@ Graphics canvas;
     @Override
     public void addShape(Shape shape) {
         shapes.add(shape);
-        refresh(canvas);
+        refresh();
     }
 
     @Override
     public void removeShape(Shape shape) {
         shapes.removeIf( f-> f.getName_key().equals(shape.getName_key()));
-        refresh(canvas);
+//        refresh(canvas);
     }
 
     @Override
