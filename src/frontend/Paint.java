@@ -122,12 +122,12 @@ public class Paint extends JFrame{
         });
 
         colorizeButton.addActionListener(e -> {
-                    Shape shape=searchShape((String) comboBox1.getSelectedItem());
+                    Shape shapeColor=searchShape((String) comboBox1.getSelectedItem());
 
-                    if (shape!=null)
+                    if (shapeColor!=null)
                     {
-                       shape.setColor(new Color(random.nextInt(255),random.nextInt(255),random.nextInt(255)));
-                       shape.setFillColor(new Color(random.nextInt(255),random.nextInt(255),random.nextInt(255)));
+                       shapeColor.setColor(new Color(random.nextInt(255),random.nextInt(255),random.nextInt(255)));
+                       shapeColor.setFillColor(new Color(random.nextInt(255),random.nextInt(255),random.nextInt(255)));
                        drawingEngine.refresh();
                     }
 
