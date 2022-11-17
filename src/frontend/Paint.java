@@ -7,6 +7,7 @@ import backend.Shape;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class Paint extends JFrame {
@@ -30,7 +31,7 @@ public class Paint extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Drawing Application");
 
-        drawingEngine = new DrawingEngineBase(canavas.getGraphics());
+        drawingEngine = new DrawingEngineBase();
 
         linesegmentButton.addActionListener(e -> {
             LineSegment lineSegment = new LineSegment();
@@ -86,6 +87,7 @@ public class Paint extends JFrame {
                 }
 
             }
+
             circle = new Circle(values.get(0), values.get(1), values.get(2), "circle");
             circle.generateKey();
             drawingEngine.addShape(circle);
@@ -124,13 +126,14 @@ public class Paint extends JFrame {
 
         colorizeButton.addActionListener(e -> {
             Shape shapeColor = searchShape((String) comboBox1.getSelectedItem());
-
             if (shapeColor != null) {
-                // TODO 7ot color men el color picker
-                shapeColor.setColor(Color.red);
-                shapeColor.setFillColor(Color.green);
-                drawingEngine.refresh(canavas.getGraphics());
+                HashMap<String,Double> properties=new HashMap<>();
+                properties.put("border colorize",1.0);
+                properties.put("fill colorize",2.0);
+                shapeColor.setProperties(properties);
+                new ColorChoose(drawingEngine,shapeColor,canavas.getGraphics());
             }
+
         });
     }
 
