@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-public class Paint extends JFrame {
+public class Paint extends JFrame implements Node {
     private JButton linesegmentButton;
     private JPanel panel1;
     private JPanel canavas;
@@ -23,13 +23,15 @@ public class Paint extends JFrame {
     ArrayList<Integer> values;
     DrawingEngineBase drawingEngine;
     Random random = new Random();
-
+    ColorChoose colorChoose;
+    HashMap<String,Double> properties;
     public Paint() {
         setContentPane(panel1);
         setVisible(true);
         setSize(850, 850);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Drawing Application");
+        properties=new HashMap<>();
 
         drawingEngine = new DrawingEngineBase();
 
@@ -50,6 +52,8 @@ public class Paint extends JFrame {
             lineSegment.generateKey();
             drawingEngine.addShape(lineSegment);
             updateCombo(lineSegment);
+            properties.put("",null);
+            lineSegment.setProperties(properties);
             drawingEngine.refresh(canavas.getGraphics());
         });
 
@@ -70,6 +74,8 @@ public class Paint extends JFrame {
             square.generateKey();
             updateCombo(square);
             drawingEngine.addShape(square);
+            properties.put("",null);
+            square.setProperties(properties);
             drawingEngine.refresh(canavas.getGraphics());
         });
 
@@ -92,6 +98,8 @@ public class Paint extends JFrame {
             circle.generateKey();
             drawingEngine.addShape(circle);
             updateCombo(circle);
+            properties.put("",null);
+            circle.setProperties(properties);
             drawingEngine.refresh(canavas.getGraphics());
         });
 
@@ -111,6 +119,8 @@ public class Paint extends JFrame {
             rectangle = new Rectangle(values.get(0), values.get(1), values.get(2), values.get(3), "rectangle");
             rectangle.generateKey();
             drawingEngine.addShape(rectangle);
+            properties.put("",null);
+            rectangle.setProperties(properties);
             updateCombo(rectangle);
             drawingEngine.refresh(canavas.getGraphics());
         });
@@ -127,12 +137,10 @@ public class Paint extends JFrame {
         colorizeButton.addActionListener(e -> {
             Shape shapeColor = searchShape((String) comboBox1.getSelectedItem());
             if (shapeColor != null) {
-                HashMap<String,Double> properties=new HashMap<>();
-                properties.put("border colorize",1.0);
-                properties.put("fill colorize",2.0);
-                shapeColor.setProperties(properties);
-                new ColorChoose(drawingEngine,shapeColor,canavas.getGraphics());
+                colorChoose=new ColorChoose(drawingEngine,shapeColor,canavas.getGraphics(),properties);
+                colorChoose.setParent(this);
             }
+            drawingEngine.refresh(colorChoose.returnCanavas());
 
         });
     }
@@ -150,5 +158,15 @@ public class Paint extends JFrame {
 
         }
         return null;
+    }
+
+    @Override
+    public Node getParentNode() {
+        return null;
+    }
+
+    @Override
+    public void setParent(Node node) {
+
     }
 }

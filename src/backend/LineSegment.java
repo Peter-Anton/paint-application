@@ -18,9 +18,14 @@ public class LineSegment extends ShapeBase{
     }
     @Override
     public void draw(Graphics canvas) {
-        canvas.drawLine(getPosition().x,getPosition().y,x2,y2);
+        canvas.drawLine(getPosition().x, getPosition().y, x2, y2);
+       if (getProperties().get("")==null)
+           return;
+        if (this.getProperties().get("border color") == 1.0) {
+            canvas.setColor(getColor());
+            canvas.drawLine(getPosition().x, getPosition().y, x2, y2);
+        }
     }
-
     @Override
     public String[] data() {
         return new String[]{"x1","y1","x2", "y2"};

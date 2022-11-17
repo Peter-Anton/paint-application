@@ -13,13 +13,17 @@ public Circle(int x,int y,int diameter,String name){
     @Override
     public void draw(Graphics canvas) {
         canvas.drawOval(getPosition().x, getPosition().y, diameter,diameter);
-        if (this.getProperties().get("border color")!=1.0){
-            canvas.setColor(getFillColor());
-            canvas.fillOval(getPosition().x, getPosition().y, diameter,diameter);
+        if (this.getProperties().get("")==null)
+            return;
+        if (this.getProperties().get("border color")==1.0){
+            canvas.setColor(getColor());
+            canvas.drawOval(getPosition().x, getPosition().y, diameter,diameter);
+
         }
-        if (this.getProperties().get("fill color")!=1.0){
+        if (this.getProperties().get("fill color")==2.0){
          canvas.setColor(getFillColor());
          canvas.fillOval(getPosition().x, getPosition().y, diameter,diameter);
+            canvas.drawOval(getPosition().x, getPosition().y, diameter,diameter);
 
       }
 }

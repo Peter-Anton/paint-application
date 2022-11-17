@@ -4,7 +4,11 @@ import backend.DrawingEngineBase;
 import backend.Shape;
 import javax.swing.*;
 import java.awt.*;
-public class ColorChoose extends JFrame  {
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+
+public class ColorChoose extends JFrame implements Node {
     Graphics canvas;
     DrawingEngineBase engine;
     java.awt.Color color;
@@ -17,50 +21,76 @@ public class ColorChoose extends JFrame  {
     private JButton setColorButton;
     private JPanel fillColorPanel;
     private JPanel outlinesColorpanel;
-    public ColorChoose(DrawingEngineBase engine, Shape shape, Graphics canvas) {
+    private Node parent;
+    HashMap<String,Double> properties;
+    public ColorChoose(DrawingEngineBase engine, Shape shape, Graphics canvas,HashMap<String,Double> properties) {
+        System.out.println(panel1);
         setContentPane(panel1);
         setVisible(true);
         setSize(400, 300);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setTitle("color");
-
+        setTitle("Drawing Application");
         this.canvas = canvas;
         this.engine = engine;
         this.shape=shape;
-
-        setColorButton.addActionListener(e -> {
-        });
-        fillColorCheckBox.addActionListener(e1 -> {
-
-            fillColorButton.addActionListener(e -> {
+        this.properties=properties;
+        fillColorButton.addActionListener(e -> {
+            if (fillColorCheckBox.isSelected()){
+            color = java.awt.Color.BLACK;
+            color = JColorChooser.showDialog(this,"Select a Color",color);
+            if(color == null)
+            {
                 color = java.awt.Color.BLACK;
-                color = JColorChooser.showDialog(this,"Select a Color",color);
-                if(color == null)
-                {
-                    color = Color.white;
-                    fillColorPanel.setBackground(color);
-                    shape.setFillColor(color);
-                }
                 fillColorPanel.setBackground(color);
                 shape.setFillColor(color);
-            });
+                properties.put("fill colorize",2.0);
+                shape.setProperties(properties);
+            }
+            fillColorPanel.setBackground(color);
+            shape.setFillColor(color);
+            return;
+            }
+            fillColorPanel.setBackground(Color.getColor("ABB2BF"));
+            shape.setFillColor(Color.getColor("ABB2BF"));
 
         });
-        outlinecolrCheckBox.addActionListener(e1 -> {
-            outlineColorButton.addActionListener(e -> {
-                color = Color.BLACK;
-                color = JColorChooser.showDialog(this,"Select a Color",color);
-                if(color == null)
-                {
-                    color = java.awt.Color.BLACK;
-                    outlinesColorpanel.setBackground(color);
-                    shape.setColor(color);
-                }
+        setColorButton.addActionListener(e -> {
+            ((JFrame) ColorChoose.this.getParentNode()).setVisible(true);
+            ColorChoose.this.setVisible(false);
+            engine.refresh(canvas);
+
+        });
+        outlineColorButton.addActionListener(e -> {
+            if (outlinecolrCheckBox.isSelected()){
+            color = java.awt.Color.BLACK;
+            color = JColorChooser.showDialog(this,"Select a Color",color);
+            if(color == null)
+            {
+                color = java.awt.Color.BLACK;
                 outlinesColorpanel.setBackground(color);
-                System.out.println(shape == null);
-            });
-
+                shape.setColor(color);
+                properties.put("border colorize",1.0);
+                shape.setProperties(properties);
+            }
+            outlinesColorpanel.setBackground(color);
+            System.out.println(shape == null);
+            return;
+            }
+            outlinesColorpanel.setBackground(Color.BLACK);
+            shape.setColor(Color.BLACK);
         });
+
+    }
+public Graphics returnCanavas(){
+        return this.canvas;
+}
+    @Override
+    public Node getParentNode() {
+        return parent;
     }
 
+    @Override
+    public void setParent(Node node) {
+        this.parent=node;
+
+    }
 }

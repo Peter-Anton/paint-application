@@ -16,14 +16,21 @@ public class Rectangle extends ShapeBase{
     }
     @Override
     public void draw(Graphics canvas) {
-
         canvas.drawRect(getPosition().x,getPosition().y,width,height);
-        if (this.getFillColor()!=null)
-        {
-            canvas.setColor(getFillColor());
-            canvas.fillRect(getPosition().x,getPosition().y,width,height);
+        if (this.getProperties().get("")==null)
+            return;
+
+        if (this.getProperties().get("border color")==1.0){
+            canvas.setColor(getColor());
+            canvas.drawRect(getPosition().x,getPosition().y,width,height);
+
         }
-    }
+        if (this.getProperties().get("fill color")==2.0){
+            canvas.setColor(getFillColor());
+            canvas.fillRect(getPosition().x, getPosition().y, width,height);}
+            canvas.drawRect(getPosition().x,getPosition().y,width,height);
+
+        }
 
     @Override
     public String[] data() {
