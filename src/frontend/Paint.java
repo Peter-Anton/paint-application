@@ -24,14 +24,13 @@ public class Paint extends JFrame implements Node {
     DrawingEngineBase drawingEngine;
     Random random = new Random();
     ColorChoose colorChoose;
-    HashMap<String,Double> properties;
+    java.awt.Color color;
     public Paint() {
         setContentPane(panel1);
         setVisible(true);
         setSize(850, 850);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Drawing Application");
-        properties=new HashMap<>();
 
         drawingEngine = new DrawingEngineBase();
 
@@ -52,8 +51,6 @@ public class Paint extends JFrame implements Node {
             lineSegment.generateKey();
             drawingEngine.addShape(lineSegment);
             updateCombo(lineSegment);
-            properties.put("",null);
-            lineSegment.setProperties(properties);
             drawingEngine.refresh(canavas.getGraphics());
         });
 
@@ -74,8 +71,6 @@ public class Paint extends JFrame implements Node {
             square.generateKey();
             updateCombo(square);
             drawingEngine.addShape(square);
-            properties.put("",null);
-            square.setProperties(properties);
             drawingEngine.refresh(canavas.getGraphics());
         });
 
@@ -98,8 +93,6 @@ public class Paint extends JFrame implements Node {
             circle.generateKey();
             drawingEngine.addShape(circle);
             updateCombo(circle);
-            properties.put("",null);
-            circle.setProperties(properties);
             drawingEngine.refresh(canavas.getGraphics());
         });
 
@@ -119,8 +112,6 @@ public class Paint extends JFrame implements Node {
             rectangle = new Rectangle(values.get(0), values.get(1), values.get(2), values.get(3), "rectangle");
             rectangle.generateKey();
             drawingEngine.addShape(rectangle);
-            properties.put("",null);
-            rectangle.setProperties(properties);
             updateCombo(rectangle);
             drawingEngine.refresh(canavas.getGraphics());
         });
@@ -137,10 +128,20 @@ public class Paint extends JFrame implements Node {
         colorizeButton.addActionListener(e -> {
             Shape shapeColor = searchShape((String) comboBox1.getSelectedItem());
             if (shapeColor != null) {
-                colorChoose=new ColorChoose(drawingEngine,shapeColor,canavas.getGraphics(),properties);
-                colorChoose.setParent(this);
+                ColorChoose colorChoose1=new ColorChoose(drawingEngine,shapeColor,canavas.getGraphics());
+                colorChoose1.setParent(this);
+                drawingEngine.refresh(canavas.getGraphics());
+//                Color BorderChoser=JColorChooser.showDialog(this,"borde chooser",color);
+//                shapeColor.setColor(BorderChoser);
+//                System.out.println("Border choser"+BorderChoser);
+//                System.out.println("border color:"+shapeColor.getColor());
+//                Color FillChoser=JColorChooser.showDialog(this,"fill chooser",color);
+//                shapeColor.setFillColor(FillChoser);
+//                System.out.println("fill chooser"+FillChoser);
+//                System.out.println("fill color:"+shapeColor.getFillColor());
+//                drawingEngine.refresh(canavas.getGraphics());
             }
-            drawingEngine.refresh(colorChoose.returnCanavas());
+
 
         });
     }

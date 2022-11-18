@@ -1,6 +1,5 @@
 package backend;
 
-import frontend.Paint;
 
 import java.awt.*;
 
@@ -15,17 +14,13 @@ public class LineSegment extends ShapeBase{
         this.y2=y2;
         setPosition(new Point(x1,y1));
         setShapeName(name);
+        setColor(Color.black);
     }
     @Override
     public void draw(Graphics canvas) {
+        canvas.setColor(this.getColor());
         canvas.drawLine(getPosition().x, getPosition().y, x2, y2);
-       if (getProperties().get("")==null)
-           return;
-        if (this.getProperties().get("border color") == 1.0) {
-            canvas.setColor(getColor());
-            canvas.drawLine(getPosition().x, getPosition().y, x2, y2);
-        }
-    }
+           }
     @Override
     public String[] data() {
         return new String[]{"x1","y1","x2", "y2"};

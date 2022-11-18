@@ -22,7 +22,9 @@
         </constraints>
         <properties>
           <background color="-66049"/>
+          <doubleBuffered value="true"/>
           <enabled value="true"/>
+          <foreground color="-66049"/>
           <opaque value="false"/>
         </properties>
         <border type="none"/>

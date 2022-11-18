@@ -1,13 +1,10 @@
 package backend;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 public abstract class ShapeBase implements Shape{
     private Point position;
-    private Map<String, Double> properties=new HashMap<>();
     private Color color;
     private Color fillColor;
     private   String name_key;
@@ -22,15 +19,9 @@ public abstract class ShapeBase implements Shape{
         return position;
     }
 
-    @Override
-    public void setProperties(Map<String, Double> properties) {
-        this.properties = properties;
-    }
 
-    @Override
-    public Map<String, Double> getProperties() {
-        return properties;
-    }
+
+
 
     @Override
     public void setColor(Color color) {this.color=color;}
