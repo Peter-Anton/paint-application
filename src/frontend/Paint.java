@@ -6,6 +6,8 @@ import backend.Shape;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -131,18 +133,16 @@ public class Paint extends JFrame implements Node {
                 ColorChoose colorChoose1=new ColorChoose(drawingEngine,shapeColor,canavas.getGraphics());
                 colorChoose1.setParent(this);
                 drawingEngine.refresh(canavas.getGraphics());
-//                Color BorderChoser=JColorChooser.showDialog(this,"borde chooser",color);
-//                shapeColor.setColor(BorderChoser);
-//                System.out.println("Border choser"+BorderChoser);
-//                System.out.println("border color:"+shapeColor.getColor());
-//                Color FillChoser=JColorChooser.showDialog(this,"fill chooser",color);
-//                shapeColor.setFillColor(FillChoser);
-//                System.out.println("fill chooser"+FillChoser);
-//                System.out.println("fill color:"+shapeColor.getFillColor());
-//                drawingEngine.refresh(canavas.getGraphics());
             }
 
 
+        });
+        panel1.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+
+            }
         });
     }
 

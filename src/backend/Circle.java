@@ -10,12 +10,14 @@ public Circle(int x,int y,int diameter,String name){
     this.setPosition(new Point(x,y));
     setShapeName(name);
     setColor(Color.black);
-    setFillColor(new Color(238,238,238,0));
 }
     @Override
     public void draw(Graphics canvas) {
-        canvas.setColor(getColor());
-        canvas.drawOval(getPosition().x, getPosition().y, diameter,diameter);
+        if (getFillColor()==null) {
+            canvas.setColor(getColor());
+            canvas.drawOval(getPosition().x, getPosition().y, diameter,diameter);
+        return;
+        }
         canvas.setColor(getFillColor());
         canvas.fillOval(getPosition().x+1, getPosition().y+1, diameter-2,diameter-2);
     }

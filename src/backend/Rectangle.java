@@ -12,14 +12,16 @@ public class Rectangle extends ShapeBase{
         setPosition(new Point(x,y));
         setShapeName(name);
         setColor(Color.black);
-        setFillColor(new Color(238,238,238,0));
-
-
     }
     @Override
     public void draw(Graphics canvas) {
-
-        canvas.drawRect(getPosition().x,getPosition().y,width,height);
+        if (getFillColor()==null) {
+            canvas.setColor(getColor());
+            canvas.drawRect(getPosition().x,getPosition().y,width,height);
+            return;
+        }
+        canvas.setColor(getFillColor());
+        canvas.fillRect(getPosition().x,getPosition().y,width,height);
 
         }
 

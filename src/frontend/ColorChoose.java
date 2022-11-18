@@ -4,7 +4,6 @@ import backend.DrawingEngineBase;
 import backend.Shape;
 import javax.swing.*;
 import java.awt.*;
-
 public class ColorChoose extends JFrame implements Node {
     Graphics canvas;
     DrawingEngineBase engine;
@@ -18,6 +17,7 @@ public class ColorChoose extends JFrame implements Node {
     private JButton setColorButton;
     private JPanel fillColorPanel;
     private JPanel outlinesColorpanel;
+    private JButton cancelButton;
     private Node parent;
     public ColorChoose(DrawingEngineBase engine, Shape shape, Graphics canvas) {
         System.out.println(panel1);
@@ -29,6 +29,8 @@ public class ColorChoose extends JFrame implements Node {
         this.canvas = canvas;
         this.engine = engine;
         this.shape=shape;
+        shape.setFillColor(null);
+        shape.setColor(Color.black);
         fillColorButton.addActionListener(e -> {
             if (fillColorCheckBox.isSelected()){
             color = java.awt.Color.BLACK;
@@ -43,8 +45,8 @@ public class ColorChoose extends JFrame implements Node {
             shape.setFillColor(color);
             return;
             }
-            fillColorPanel.setBackground(Color.getColor("ABB2BF"));
-            shape.setFillColor(Color.getColor("ABB2BF"));
+            fillColorPanel.setBackground(null);
+            shape.setFillColor(null);
 
         });
 
@@ -66,13 +68,20 @@ public class ColorChoose extends JFrame implements Node {
                 shape.setColor(color);
             }
             outlinesColorpanel.setBackground(color);
-            System.out.println(shape == null);
+//            System.out.println(shape == null);
+            if (shape!=null)
+            shape.setColor(color);
             return;
             }
             outlinesColorpanel.setBackground(Color.BLACK);
             shape.setColor(Color.BLACK);
         });
 
+        cancelButton.addActionListener(e -> {
+
+            ((JFrame) ColorChoose.this.getParentNode()).setVisible(true);
+            ColorChoose.this.setVisible(false);
+        });
     }
 public Graphics returnCanavas(){
         return this.canvas;
