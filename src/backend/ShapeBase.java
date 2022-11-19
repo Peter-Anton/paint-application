@@ -10,7 +10,7 @@ public abstract class ShapeBase implements Shape{
     private   String name_key;
     private final Random random=new Random();
     private String ShapeName;
-
+    private  static int Key1=0;
     @Override
     public void setPosition(Point position) {this.position = position;}
 
@@ -27,6 +27,9 @@ public abstract class ShapeBase implements Shape{
     public void setColor(Color color) {this.color=color;}
     @Override
     public Color getColor() {
+        if (color==null)
+            return Color.black;
+
         return color;
     }
     @Override
@@ -43,8 +46,8 @@ public abstract class ShapeBase implements Shape{
     abstract public  String[] data();
 
     public void generateKey(){
-        int Key1=random.nextInt(100);
-        name_key=ShapeName+"_"+Key1;
+
+        name_key=ShapeName+"_"+String.format("%02d",Key1++);
     }
     public String getName_key() {
         return name_key;

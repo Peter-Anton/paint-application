@@ -27,7 +27,7 @@
           <foreground color="-66049"/>
           <opaque value="false"/>
         </properties>
-        <border type="line"/>
+        <border type="none"/>
         <children/>
       </grid>
       <component id="1f173" class="javax.swing.JButton" binding="circleButton" default-binding="true">

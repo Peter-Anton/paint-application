@@ -8,9 +8,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Paint extends JFrame implements Node {
     private JButton linesegmentButton;
@@ -138,13 +141,63 @@ public class Paint extends JFrame implements Node {
 
 
         });
+
+        addWindowListener(new WindowListener() {
+
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                drawingEngine.refresh(canavas.getGraphics());
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                drawingEngine.refresh(canavas.getGraphics());
+            }
+        });
+        final AtomicBoolean refresh=new AtomicBoolean(false);
         panel1.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
-
+                refresh.set (true) ;
+                new Thread ( ()-> {
+                    try {
+                        Thread.sleep(1);
+                        if (!refresh.get()) return;
+                        drawingEngine.refresh(canavas.getGraphics());
+                        refresh.set(false)
+                        ;
+                    } catch (InterruptedException ignored) {
+                    }
+                }).start () ;
             }
         });
+
     }
 
     private void updateCombo(Shape shape) {

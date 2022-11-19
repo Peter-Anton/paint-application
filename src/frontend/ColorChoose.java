@@ -30,18 +30,10 @@ public class ColorChoose extends JFrame implements Node {
         this.canvas = canvas;
         this.engine = engine;
         this.shape=shape;
-//        shape.setFillColor(null);
-//        shape.setColor(Color.black);
         fillColorButton.addActionListener(e -> {
             if (fillColorCheckBox.isSelected()){
             color = Color.BLACK;
             color = JColorChooser.showDialog(this,"Select a Color",color);
-//            if(color == null)
-//            {
-//                color = java.awt.Color.BLACK;
-//                fillColorPanel.setBackground(color);
-//                shape.setFillColor(color);
-//            }
             fillColorPanel.setBackground(color);
             shape.setFillColor(color);
             return;
@@ -62,14 +54,7 @@ public class ColorChoose extends JFrame implements Node {
             if (outlinecolrCheckBox.isSelected()){
             color = java.awt.Color.BLACK;
             color = JColorChooser.showDialog(this,"Select a Color",color);
-//            if(color == null)
-//            {
-//                color = java.awt.Color.BLACK;
-//                outlinesColorpanel.setBackground(color);
-//                shape.setColor(color);
-//            }
             outlinesColorpanel.setBackground(color);
-//            System.out.println(shape == null);
             if (shape!=null)
             shape.setColor(color);
             return;
