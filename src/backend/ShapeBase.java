@@ -1,14 +1,12 @@
 package backend;
 
 import java.awt.*;
-import java.util.Random;
 
 public abstract class ShapeBase implements Shape{
     private Point position;
     private Color color;
     private Color fillColor;
     private   String name_key;
-    private final Random random=new Random();
     private String ShapeName;
     private  static int Key1=0;
     @Override
@@ -29,7 +27,6 @@ public abstract class ShapeBase implements Shape{
     public Color getColor() {
         if (color==null)
             return Color.black;
-
         return color;
     }
     @Override
@@ -46,7 +43,6 @@ public abstract class ShapeBase implements Shape{
     abstract public  String[] data();
 
     public void generateKey(){
-
         name_key=ShapeName+"_"+String.format("%02d",Key1++);
     }
     public String getName_key() {

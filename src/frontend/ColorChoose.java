@@ -20,8 +20,6 @@ public class ColorChoose extends JFrame implements Node {
     private JButton cancelButton;
     private Node parent;
     public ColorChoose(DrawingEngineBase engine, Shape shape, Graphics canvas) {
-        System.out.println(panel1);
-
         setContentPane(panel1);
         setVisible(true);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -55,7 +53,6 @@ public class ColorChoose extends JFrame implements Node {
             color = java.awt.Color.BLACK;
             color = JColorChooser.showDialog(this,"Select a Color",color);
             outlinesColorpanel.setBackground(color);
-            if (shape!=null)
             shape.setColor(color);
             return;
             }
@@ -64,14 +61,10 @@ public class ColorChoose extends JFrame implements Node {
         });
 
         cancelButton.addActionListener(e -> {
-
             ((JFrame) ColorChoose.this.getParentNode()).setVisible(true);
             ColorChoose.this.setVisible(false);
         });
     }
-public Graphics returnCanavas(){
-        return this.canvas;
-}
     @Override
     public Node getParentNode() {
         return parent;

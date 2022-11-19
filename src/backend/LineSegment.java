@@ -23,10 +23,7 @@ public class LineSegment extends ShapeBase{
            }
 
     @Override
-    public void drawFill(Graphics canvas) {
-        return;
-    }
-
+    public void drawFill(Graphics canvas) {}
     @Override
     public String[] data() {
         return new String[]{"x1","y1","x2", "y2"};

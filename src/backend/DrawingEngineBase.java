@@ -2,13 +2,10 @@ package backend;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Random;
+
 
 public class DrawingEngineBase implements DrawingEngine  {
 private  ArrayList<Shape> shapes=new ArrayList<>();
-
-    private static final Random random=new Random();
-
     @Override
     public void addShape(Shape shape) {
         shapes.add(shape);

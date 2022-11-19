@@ -5,14 +5,11 @@ import backend.Rectangle;
 import backend.Shape;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Paint extends JFrame implements Node {
@@ -27,9 +24,6 @@ public class Paint extends JFrame implements Node {
     private JComboBox<String> comboBox1;
     ArrayList<Integer> values;
     DrawingEngineBase drawingEngine;
-    Random random = new Random();
-    ColorChoose colorChoose;
-    java.awt.Color color;
     public Paint() {
         setContentPane(panel1);
         setVisible(true);
