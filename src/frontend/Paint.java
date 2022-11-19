@@ -131,6 +131,7 @@ public class Paint extends JFrame implements Node {
             Shape shapeColor = searchShape((String) comboBox1.getSelectedItem());
             if (shapeColor != null) {
                 ColorChoose colorChoose1=new ColorChoose(drawingEngine,shapeColor,canavas.getGraphics());
+                colorChoose1.setTitle("Colorize "+comboBox1.getSelectedItem());
                 colorChoose1.setParent(this);
                 drawingEngine.refresh(canavas.getGraphics());
             }

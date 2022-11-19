@@ -13,15 +13,15 @@ public Circle(int x,int y,int diameter,String name){
 }
     @Override
     public void draw(Graphics canvas) {
-        if (getFillColor()==null) {
             canvas.setColor(getColor());
             canvas.drawOval(getPosition().x, getPosition().y, diameter,diameter);
-        return;
-        }
+    }
+
+    public void drawFill(Graphics canvas)
+    {
         canvas.setColor(getFillColor());
         canvas.fillOval(getPosition().x+1, getPosition().y+1, diameter-2,diameter-2);
     }
-
     @Override
     public String[] data() {
         return new String[]{"x","y","diameter"};

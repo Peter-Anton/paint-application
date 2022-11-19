@@ -39,6 +39,7 @@ public abstract class ShapeBase implements Shape{
 
     @Override
     abstract public void draw(Graphics canvas) ;
+    public abstract void drawFill(Graphics canvas);
     abstract public  String[] data();
 
     public void generateKey(){

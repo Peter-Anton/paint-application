@@ -11,18 +11,18 @@ public class Rectangle extends ShapeBase{
         this.width=width;
         setPosition(new Point(x,y));
         setShapeName(name);
-        setColor(Color.black);
+//        setColor(Color.black);
     }
     @Override
     public void draw(Graphics canvas) {
-        if (getFillColor()==null) {
-            canvas.setColor(getColor());
-            canvas.drawRect(getPosition().x,getPosition().y,width,height);
-            return;
+        canvas.setColor(getColor());
+        canvas.drawRect(getPosition().x,getPosition().y,width,height);
         }
-        canvas.setColor(getFillColor());
-        canvas.fillRect(getPosition().x,getPosition().y,width,height);
 
+        public void drawFill(Graphics canvas)
+        {
+            canvas.setColor(getFillColor());
+            canvas.fillRect(getPosition().x+1,getPosition().y+1,width-1,height-1);
         }
 
     @Override

@@ -29,6 +29,9 @@ private  ArrayList<Shape> shapes=new ArrayList<>();
         canvas.clearRect(0, 0, 9999, 9999);
         for (Shape shape: shapes) {
             shape.draw(canvas);
+            if(shape.getFillColor() != null){
+            shape.drawFill(canvas);
+        }
         }
     }
 }
