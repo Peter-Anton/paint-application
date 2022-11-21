@@ -27,7 +27,7 @@ public class Paint extends JFrame implements Node {
     public Paint() {
         setContentPane(panel1);
         setVisible(true);
-        setSize(850, 850);
+        setSize(1000, 900);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Drawing Application");
 
@@ -39,11 +39,14 @@ public class Paint extends JFrame implements Node {
             int i = 0;
             values = new ArrayList<>();
             while (i < data.length) {
-                try {
-                    values.add(Integer.parseInt(JOptionPane.showInputDialog("please enter " + data[i] + ":")));
-                    i++;
-                } catch (NumberFormatException e1) {
-                    JOptionPane.showMessageDialog(null, "enter a valid number");
+                String V=JOptionPane.showInputDialog("please enter " + data[i] + ":");
+                if (V==null)
+                    return;
+                    try {
+                        values.add(Integer.parseInt(V));
+                        i++;
+                    } catch (NumberFormatException e1) {
+                        JOptionPane.showMessageDialog(null, "enter a valid number");
                 }
             }
             lineSegment = new LineSegment(values.get(0), values.get(1), values.get(2), values.get(3), "line_segment");
@@ -59,8 +62,11 @@ public class Paint extends JFrame implements Node {
             int i = 0;
             values = new ArrayList<>();
             while (i < data.length) {
+                String V=JOptionPane.showInputDialog("please enter " + data[i] + ":");
+                if (V==null)
+                    return;
                 try {
-                    values.add(Integer.parseInt(JOptionPane.showInputDialog("please enter " + data[i] + " of the square:")));
+                    values.add(Integer.parseInt(V));
                     i++;
                 } catch (NumberFormatException e1) {
                     JOptionPane.showMessageDialog(null, "enter a valid number");
@@ -79,8 +85,11 @@ public class Paint extends JFrame implements Node {
             int i = 0;
             values = new ArrayList<>();
             while (i < data.length) {
+                String V=JOptionPane.showInputDialog("please enter " + data[i] + ":");
+                if (V==null)
+                    return;
                 try {
-                    values.add(Integer.parseInt(JOptionPane.showInputDialog("please enter " + data[i] + ":")));
+                    values.add(Integer.parseInt(V));
                     i++;
                 } catch (NumberFormatException e1) {
                     JOptionPane.showMessageDialog(null, "enter a valid number");
@@ -101,8 +110,11 @@ public class Paint extends JFrame implements Node {
             int i = 0;
             values = new ArrayList<>();
             while (i < data.length) {
+                String V=JOptionPane.showInputDialog("please enter " + data[i] + ":");
+                if (V==null)
+                    return;
                 try {
-                    values.add(Integer.parseInt(JOptionPane.showInputDialog("please enter " + data[i] + ":")));
+                    values.add(Integer.parseInt(V));
                     i++;
                 } catch (NumberFormatException e1) {
                     JOptionPane.showMessageDialog(null, "enter a valid number");
