@@ -19,15 +19,18 @@ public class ColorChoose extends JFrame implements Node {
     private JPanel outlinesColorpanel;
     private JButton cancelButton;
     private Node parent;
+
     public ColorChoose(DrawingEngineBase engine, Shape shape, Graphics canvas) {
         setContentPane(panel1);
         setVisible(true);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setSize(400, 300);
         setTitle("Drawing Application");
+
         this.canvas = canvas;
         this.engine = engine;
         this.shape=shape;
+
         fillColorButton.addActionListener(e -> {
             if (fillColorCheckBox.isSelected()){
             color = Color.BLACK;

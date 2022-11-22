@@ -30,7 +30,6 @@ public class Paint extends JFrame implements Node {
         setSize(1000, 900);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Drawing Application");
-
         drawingEngine = new DrawingEngineBase();
 
         linesegmentButton.addActionListener(e -> {
@@ -42,9 +41,14 @@ public class Paint extends JFrame implements Node {
                 String V=JOptionPane.showInputDialog("please enter " + data[i] + ":");
                 if (V==null)
                     return;
-                    try {
+                     try {
+                         if(Integer.parseInt(V)<0){
+                             JOptionPane.showMessageDialog(null,"write a positive number");
+                         continue;
+                         }
                         values.add(Integer.parseInt(V));
                         i++;
+
                     } catch (NumberFormatException e1) {
                         JOptionPane.showMessageDialog(null, "enter a valid number");
                 }
@@ -65,8 +69,12 @@ public class Paint extends JFrame implements Node {
                 String V=JOptionPane.showInputDialog("please enter " + data[i] + ":");
                 if (V==null)
                     return;
+
                 try {
-                    values.add(Integer.parseInt(V));
+                    if(Integer.parseInt(V)<0) {
+                        JOptionPane.showMessageDialog(null, "write a positive number");
+                    continue;
+                    }values.add(Integer.parseInt(V));
                     i++;
                 } catch (NumberFormatException e1) {
                     JOptionPane.showMessageDialog(null, "enter a valid number");
@@ -88,8 +96,12 @@ public class Paint extends JFrame implements Node {
                 String V=JOptionPane.showInputDialog("please enter " + data[i] + ":");
                 if (V==null)
                     return;
+
                 try {
-                    values.add(Integer.parseInt(V));
+                    if(Integer.parseInt(V)<0) {
+                        JOptionPane.showMessageDialog(null, "write a positive number");
+                    continue;
+                    }values.add(Integer.parseInt(V));
                     i++;
                 } catch (NumberFormatException e1) {
                     JOptionPane.showMessageDialog(null, "enter a valid number");
@@ -113,9 +125,15 @@ public class Paint extends JFrame implements Node {
                 String V=JOptionPane.showInputDialog("please enter " + data[i] + ":");
                 if (V==null)
                     return;
+
                 try {
-                    values.add(Integer.parseInt(V));
+                    if(Integer.parseInt(V)<0) {
+                        JOptionPane.showMessageDialog(null, "write a positive number");
+                        continue;
+                    }
+                        values.add(Integer.parseInt(V));
                     i++;
+
                 } catch (NumberFormatException e1) {
                     JOptionPane.showMessageDialog(null, "enter a valid number");
                 }
