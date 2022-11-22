@@ -208,18 +208,8 @@ public class Paint extends JFrame implements Node {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
-                refresh.set (true) ;
-                new Thread ( ()-> {
-                    try {
-                        Thread.sleep(1);
-                        if (!refresh.get()) return;
                         drawingEngine.refresh(canavas.getGraphics());
-                        refresh.set(false)
-                        ;
-                    } catch (InterruptedException ignored) {
                     }
-                }).start () ;
-            }
         });
 
     }
