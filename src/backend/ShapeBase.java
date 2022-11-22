@@ -17,10 +17,6 @@ public abstract class ShapeBase implements Shape{
         return position;
     }
 
-
-
-
-
     @Override
     public void setColor(Color color) {this.color=color;}
     @Override

@@ -215,13 +215,13 @@ public class Paint extends JFrame implements Node {
     }
 
     private void updateCombo(Shape shape) {
-        comboBox1.addItem(shape.getName_key());
+        comboBox1.addItem(((ShapeBase)shape).getName_key());
     }
 
     private Shape searchShape(String Key) {
         Shape[] shapes = drawingEngine.getShapes();
         for (Shape shap : shapes) {
-            if (Key.equals(shap.getName_key())) {
+            if (Key.equals(((ShapeBase)shap).getName_key())) {
                 return shap;
             }
 
