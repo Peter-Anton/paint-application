@@ -1,4 +1,4 @@
-package backend;
+package shapes;
 
 import java.awt.*;
 

@@ -1,29 +1,27 @@
 package frontend;
 
-import backend.*;
-import backend.Rectangle;
-import backend.Shape;
+import shapes.*;
+import shapes.Rectangle;
+import shapes.Shape;
 
 import javax.swing.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Paint extends JFrame implements Node {
+public class Paint extends JFrame implements Node{
     private JButton linesegmentButton;
     private JPanel panel1;
     private JPanel canavas;
     private JButton circleButton;
     private JButton rectangleButton;
-    private JButton squareButton;
+    private JButton triangleButton;
     private JButton colorizeButton;
     private JButton deleteButton;
     private JComboBox<String> comboBox1;
     ArrayList<Integer> values;
     DrawingEngineBase drawingEngine;
+    private  static Point selectedPoint;
     public Paint() {
         setContentPane(panel1);
         setVisible(true);
@@ -31,85 +29,42 @@ public class Paint extends JFrame implements Node {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Drawing Application");
         drawingEngine = new DrawingEngineBase();
-
+        canavas.addMouseListener(new Click());
+        canavas.addMouseMotionListener(new Drag());
         linesegmentButton.addActionListener(e -> {
             LineSegment lineSegment = new LineSegment();
-            String[] data = lineSegment.data();
-            int i = 0;
             values = new ArrayList<>();
-            while (i < data.length) {
-                String V=JOptionPane.showInputDialog("please enter " + data[i] + ":");
-                if (V==null)
-                    return;
-                     try {
-                         if(Integer.parseInt(V)<0){
-                             JOptionPane.showMessageDialog(null,"write a positive number");
-                         continue;
-                         }
-                        values.add(Integer.parseInt(V));
-                        i++;
-
-                    } catch (NumberFormatException e1) {
-                        JOptionPane.showMessageDialog(null, "enter a valid number");
-                }
-            }
-            lineSegment = new LineSegment(values.get(0), values.get(1), values.get(2), values.get(3), "line_segment");
+            new LineData(values,lineSegment);
+            lineSegment = new LineSegment(new Point(values.get(0), values.get(1)), new Point(values.get(2), values.get(3)), "line_segment");
             lineSegment.generateKey();
             drawingEngine.addShape(lineSegment);
             updateCombo(lineSegment);
             drawingEngine.refresh(canavas.getGraphics());
         });
 
-        squareButton.addActionListener(e -> {
-            Rectangle square = new Rectangle();
-            String[] data = square.squareData();
-            int i = 0;
+        triangleButton.addActionListener(e -> {
+            Triangle triangle = new Triangle();
             values = new ArrayList<>();
-            while (i < data.length) {
-                String V=JOptionPane.showInputDialog("please enter " + data[i] + ":");
-                if (V==null)
-                    return;
-
-                try {
-                    if(Integer.parseInt(V)<0) {
-                        JOptionPane.showMessageDialog(null, "write a positive number");
-                    continue;
-                    }values.add(Integer.parseInt(V));
-                    i++;
-                } catch (NumberFormatException e1) {
-                    JOptionPane.showMessageDialog(null, "enter a valid number");
-                }
-            }
-            square = new Rectangle(values.get(0), values.get(1), values.get(2), values.get(2), "square");
-            square.generateKey();
-            updateCombo(square);
-            drawingEngine.addShape(square);
+            setVisible(false);
+            TriangleData triangleData=new TriangleData(values,triangle);
+            triangleData.setVisible(true);
+            triangle = new Triangle(new Point(values.get(0), values.get(1)),new Point( values.get(2), values.get(3)),new Point(values.get(4),values.get(5)),"triangle");
+            triangle.generateKey();
+            updateCombo(triangle);
+            drawingEngine.addShape(triangle);
             drawingEngine.refresh(canavas.getGraphics());
         });
 
         circleButton.addActionListener(e -> {
             Circle circle = new Circle();
-            String[] data = circle.data();
-            int i = 0;
+
             values = new ArrayList<>();
-            while (i < data.length) {
-                String V=JOptionPane.showInputDialog("please enter " + data[i] + ":");
-                if (V==null)
-                    return;
+            CircleData circleData=new CircleData(values,circle);
+            setVisible(false);
+            circleData.setParent(this);
+            setVisible(true);
 
-                try {
-                    if(Integer.parseInt(V)<0) {
-                        JOptionPane.showMessageDialog(null, "write a positive number");
-                    continue;
-                    }values.add(Integer.parseInt(V));
-                    i++;
-                } catch (NumberFormatException e1) {
-                    JOptionPane.showMessageDialog(null, "enter a valid number");
-                }
-
-            }
-
-            circle = new Circle(values.get(0), values.get(1), values.get(2), "circle");
+         circle = new Circle(new Point(values.get(0), values.get(1)), values.get(2), "circle");
             circle.generateKey();
             drawingEngine.addShape(circle);
             updateCombo(circle);
@@ -118,27 +73,13 @@ public class Paint extends JFrame implements Node {
 
         rectangleButton.addActionListener(e -> {
             Rectangle rectangle = new Rectangle();
-            String[] data = rectangle.data();
-            int i = 0;
+
             values = new ArrayList<>();
-            while (i < data.length) {
-                String V=JOptionPane.showInputDialog("please enter " + data[i] + ":");
-                if (V==null)
-                    return;
-
-                try {
-                    if(Integer.parseInt(V)<0) {
-                        JOptionPane.showMessageDialog(null, "write a positive number");
-                        continue;
-                    }
-                        values.add(Integer.parseInt(V));
-                    i++;
-
-                } catch (NumberFormatException e1) {
-                    JOptionPane.showMessageDialog(null, "enter a valid number");
-                }
-            }
-            rectangle = new Rectangle(values.get(0), values.get(1), values.get(2), values.get(3), "rectangle");
+            RectangleData rectangleData=new RectangleData(values,rectangle);
+            setVisible(false);
+            rectangleData.setParent(this);
+            rectangleData.setVisible(true);
+            rectangle = new Rectangle(new Point(values.get(0), values.get(1)), values.get(2), values.get(3), "rectangle");
             rectangle.generateKey();
             drawingEngine.addShape(rectangle);
             updateCombo(rectangle);
@@ -203,7 +144,6 @@ public class Paint extends JFrame implements Node {
                 drawingEngine.refresh(canavas.getGraphics());
             }
         });
-        final AtomicBoolean refresh=new AtomicBoolean(false);
         panel1.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -238,4 +178,22 @@ public class Paint extends JFrame implements Node {
     public void setParent(Node node) {
 
     }
+    private static class Click extends MouseAdapter{
+        //todo:select
+        @Override
+        public void mousePressed(MouseEvent e) {
+            selectedPoint=e.getPoint();
+        }
+    }
+
+    private static class Drag extends MouseMotionAdapter{
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            //Todo:drag
+        }
+    }
+
+
+
+
 }

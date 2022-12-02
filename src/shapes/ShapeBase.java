@@ -1,14 +1,15 @@
-package backend;
+package shapes;
 
 import java.awt.*;
 
-public abstract class ShapeBase implements Shape{
+public abstract class ShapeBase implements Shape,Moveable{
     private Point position;
     private Color color;
     private Color fillColor;
     private   String name_key;
     private String ShapeName;
     private  static int Key1=0;
+    private Point draggingPoint;
     @Override
     public void setPosition(Point position) {this.position = position;}
 
@@ -33,10 +34,7 @@ public abstract class ShapeBase implements Shape{
         return fillColor;
     }
 
-    @Override
-    abstract public void draw(Graphics canvas) ;
     public abstract void drawFill(Graphics canvas);
-    abstract public  String[] data();
 
     public void generateKey(){
         name_key=ShapeName+"_"+String.format("%02d",Key1++);
@@ -48,4 +46,13 @@ public abstract class ShapeBase implements Shape{
         ShapeName = shapeName;
     }
 
+    @Override
+    public void setDraggingPoint(Point point) {
+        draggingPoint=point;
+    }
+
+    @Override
+    public Point getDraggingPoint() {
+        return draggingPoint;
+    }
 }

@@ -1,4 +1,4 @@
-package backend;
+package shapes;
 
 import java.awt.*;
 
@@ -6,12 +6,11 @@ public class Rectangle extends ShapeBase{
     int width;
     int height;
     public Rectangle(){}
-    public Rectangle(int x,int y,int width,int height,String name){
+    public Rectangle(Point point,int width,int height,String name){
         this.height=height;
         this.width=width;
-        setPosition(new Point(x,y));
+        setPosition(point);
         setShapeName(name);
-//        setColor(Color.black);
     }
     @Override
     public void draw(Graphics canvas) {
@@ -25,11 +24,14 @@ public class Rectangle extends ShapeBase{
             canvas.fillRect(getPosition().x+1,getPosition().y+1,width-1,height-1);
         }
 
+
     @Override
-    public String[] data() {
-        return new String[]{"x axis","y axis","width","height"};
+    public boolean contains(Point point) {
+        return false;
     }
-    public String[] squareData(){
-        return new String[]{"x axis","y axis","width"};
+
+    @Override
+    public void moveTo(Point point) {
+        setPosition(point);
     }
 }

@@ -1,7 +1,7 @@
 package frontend;
 
-import backend.DrawingEngineBase;
-import backend.Shape;
+import shapes.DrawingEngineBase;
+import shapes.Shape;
 import javax.swing.*;
 import java.awt.*;
 public class ColorChoose extends JFrame implements Node {

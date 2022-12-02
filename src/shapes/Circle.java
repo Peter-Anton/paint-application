@@ -1,13 +1,13 @@
-package backend;
+package shapes;
 
 import java.awt.*;
 
 public class Circle extends ShapeBase{
 private int diameter;
     public Circle(){}
-public Circle(int x,int y,int diameter,String name){
+public Circle(Point point,int diameter,String name){
     this.diameter=diameter;
-    this.setPosition(new Point(x,y));
+    this.setPosition(point);
     setShapeName(name);
     setColor(Color.black);
 }
@@ -22,8 +22,15 @@ public Circle(int x,int y,int diameter,String name){
         canvas.setColor(getFillColor());
         canvas.fillOval(getPosition().x+1, getPosition().y+1, diameter-2,diameter-2);
     }
+
     @Override
-    public String[] data() {
-        return new String[]{"x","y","diameter"};
+    public boolean contains(Point point) {
+        return false;
+    }
+
+    @Override
+    public void moveTo(Point point) {
+        setPosition(point);
+
     }
 }
