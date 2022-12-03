@@ -7,11 +7,10 @@ public class LineSegment extends ShapeBase{
     Point point;
 
     public LineSegment(){}
-    public LineSegment(Point point1,Point point2,String name){
+    public LineSegment(Point point1,Point point2){
         point=point2;
         setPosition(point1);
-        setShapeName(name);
-        setColor(Color.black);
+        setShapeName("line");
     }
     @Override
     public void draw(Graphics canvas) {

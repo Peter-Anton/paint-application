@@ -4,6 +4,8 @@ import shapes.Shape;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
@@ -16,6 +18,7 @@ public class RectangleData extends JFrame implements Node {
     private JTextField textField3;
     private JTextField textField4;
     private JPanel panel1;
+    private JButton cancelButton;
     private Node parent;
     CompletableFuture<Boolean> wait=new CompletableFuture<>();
     public RectangleData(ArrayList<Integer> values, Shape shape) {
@@ -45,6 +48,10 @@ public class RectangleData extends JFrame implements Node {
                 JOptionPane.showMessageDialog(this,"enter data");
             }
 
+        });
+        cancelButton.addActionListener(e -> {
+            ((JFrame)this.getParentNode()).setVisible(true);
+            this.setVisible(false);
         });
     }
 

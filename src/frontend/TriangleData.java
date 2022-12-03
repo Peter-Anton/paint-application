@@ -4,6 +4,8 @@ import shapes.Shape;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
@@ -18,6 +20,7 @@ public class TriangleData extends JFrame implements Node {
     private JTextField textField5;
     private JTextField textField6;
     private JPanel panel1;
+    private JButton cancelButton;
     private Node parent;
     CompletableFuture<Boolean> wait=new CompletableFuture<>();
     public TriangleData(ArrayList<Integer>values, Shape shape) {
@@ -34,7 +37,6 @@ public class TriangleData extends JFrame implements Node {
             shape.setFillColor(color);
         });
         createTriangleButton.addActionListener(e -> {
-
             try {
                 values.add(Integer.parseInt(textField1.getText()));
                 values.add(Integer.parseInt(textField2.getText()));
@@ -49,6 +51,11 @@ public class TriangleData extends JFrame implements Node {
             }catch (Exception ex){
                 JOptionPane.showMessageDialog(this,"enter data");
             }
+
+        });
+        cancelButton.addActionListener(e -> {
+            ((JFrame)this.getParentNode()).setVisible(true);
+            this.setVisible(false);
 
         });
     }

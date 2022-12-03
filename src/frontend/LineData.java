@@ -17,6 +17,7 @@ public class LineData extends JFrame implements Node {
     private JTextField textField3;
     private JTextField textField4;
     private JPanel panel1;
+    private JButton cancelButton;
     private Node parent;
     CompletableFuture<Boolean> wait=new CompletableFuture<>();
     public LineData(ArrayList<Integer> values, Shape shape) {
@@ -41,6 +42,10 @@ public class LineData extends JFrame implements Node {
                 JOptionPane.showMessageDialog(this,"enter a valid data");
             }
 
+        });
+        cancelButton.addActionListener(e -> {
+            ((JFrame)this.getParentNode()).setVisible(true);
+            this.setVisible(false);
         });
     }
 

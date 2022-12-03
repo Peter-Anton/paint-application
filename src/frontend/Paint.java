@@ -57,7 +57,7 @@ public class Paint extends JFrame implements Node{
             lineData.setParent(this);
             lineData.setVisible(true);
             lineData.end().whenComplete((Boolean wait,Object o)->{
-                lineSegment.set(new LineSegment(new Point(values.get(0), values.get(1)), new Point(values.get(2), values.get(3)), "line_segment"));
+                lineSegment.set(new LineSegment(new Point(values.get(0), values.get(1)), new Point(values.get(2), values.get(3))));
                 lineSegment.get().generateKey();
                 drawingEngine.addShape(lineSegment.get());
                 updateCombo(lineSegment.get());
@@ -73,7 +73,7 @@ public class Paint extends JFrame implements Node{
             triangleData.setParent(this);
             triangleData.setVisible(true);
             triangleData.end().whenComplete((Boolean wait,Object o)->{
-                triangle.set(new Triangle(new Point(values.get(0), values.get(1)), new Point(values.get(2), values.get(3)), new Point(values.get(4), values.get(5)), "triangle"));
+                triangle.set(new Triangle(new Point(values.get(0), values.get(1)), new Point(values.get(2), values.get(3)), new Point(values.get(4), values.get(5))));
                 triangle.get().generateKey();
                 updateCombo(triangle.get());
                 drawingEngine.addShape(triangle.get());
@@ -94,7 +94,7 @@ public class Paint extends JFrame implements Node{
             circleData.end().whenComplete((Boolean wait,Object o)->{
                 setVisible(true);
                 circleData.dispose();
-                circle.set(new Circle(new Point(values.get(0), values.get(1)), values.get(2), "circle"));
+                circle.set(new Circle(new Point(values.get(0), values.get(1)), values.get(2)));
                 circle.get().generateKey();
                 drawingEngine.addShape(circle.get());
                 updateCombo(circle.get());
@@ -110,7 +110,7 @@ public class Paint extends JFrame implements Node{
             rectangleData.setParent(this);
             rectangleData.setVisible(true);
             rectangleData.end().whenComplete((Boolean wait,Object o)->{
-                rectangle.set(new Rectangle(new Point(values.get(0), values.get(1)), values.get(2), values.get(3), "rectangle"));
+                rectangle.set(new Rectangle(new Point(values.get(0), values.get(1)), values.get(2), values.get(3)));
                 rectangle.get().generateKey();
                 drawingEngine.addShape(rectangle.get());
                 updateCombo(rectangle.get());

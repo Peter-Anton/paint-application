@@ -5,10 +5,11 @@ import java.awt.*;
 public class Circle extends ShapeBase{
 private int radius;
     public Circle(){}
-public Circle(Point point,int radius,String name){
+public Circle(Point point,int radius){
     this.radius=radius;
     this.setPosition(point);
-    setShapeName(name);
+    setShapeName("circle");
+
 }
     @Override
     public void draw(Graphics canvas) {

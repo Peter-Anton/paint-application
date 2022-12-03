@@ -6,11 +6,11 @@ public class Rectangle extends ShapeBase{
     int width;
     int height;
     public Rectangle(){}
-    public Rectangle(Point point,int width,int height,String name){
+    public Rectangle(Point point,int width,int height){
         this.height=height;
         this.width=width;
         this.setPosition(point);
-        setShapeName(name);
+        setShapeName("rectangle");
     }
     @Override
     public void draw(Graphics canvas) {

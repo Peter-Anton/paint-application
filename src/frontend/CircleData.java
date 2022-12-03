@@ -1,10 +1,13 @@
 package frontend;
 
+import shapes.Circle;
 import shapes.DrawingEngineBase;
 import shapes.Shape;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
@@ -16,9 +19,10 @@ public class CircleData extends JFrame implements Node{
     private JTextField textField2;
     private JTextField textField3;
     private JPanel panel1;
+    private JButton cancelButton;
     private Node parent;
     CompletableFuture<Boolean> wait=new CompletableFuture<>();
-    public CircleData(ArrayList<Integer>values, Shape shape,DrawingEngineBase drawingEngineBase) {
+    public CircleData(ArrayList<Integer>values, Circle circle, DrawingEngineBase drawingEngineBase) {
         setContentPane(panel1);
         setVisible(true);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -31,21 +35,29 @@ public class CircleData extends JFrame implements Node{
                 ((JFrame)this.getParentNode()).setVisible(true);
                 this.setVisible(false);
                 wait.complete(true);
-                dispose();
             }catch (Exception ex){
                 JOptionPane.showMessageDialog(null,"enter valid data");
             }
 
         });
         setColorButton.addActionListener(e -> {
-            Color color = JColorChooser.showDialog(null,"choose outline color",Color.black);
-            shape.setColor(color);
+
+            Color color = Color.BLACK;
+            color = JColorChooser.showDialog(this,"choose outline color",color);
+            circle.setColor(color);
+            setColorButton.setBackground(color);
             drawingEngineBase.refresh();
         });
         setFillColorButton.addActionListener(e -> {
-            Color color = JColorChooser.showDialog(null,"choose fill color ",Color.black);
-            shape.setFillColor(color);
+            Color color = Color.black;
+            color = JColorChooser.showDialog(this,"choose fill color ",color);
+            circle.setFillColor(color);
+            setFillColorButton.setBackground(color);
             drawingEngineBase.refresh();
+        });
+        cancelButton.addActionListener(e -> {
+            ((JFrame)this.getParentNode()).setVisible(true);
+            this.setVisible(false);
         });
     }
 

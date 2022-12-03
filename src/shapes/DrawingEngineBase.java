@@ -23,11 +23,18 @@ private  ArrayList<ShapeBase> shapes=new ArrayList<>();
     }
 
 
-        public void paintComponent(Graphics graphics) {
+        public void paint (Graphics graphics)
+        {
             super.paintComponent(graphics);
 
             shapes.forEach(shape -> shape.draw(graphics));
+
         }
+//        public void paintComponent(Graphics graphics) {
+//            super.paintComponent(graphics);
+//
+//            shapes.forEach(shape -> shape.draw(graphics));
+//        }
 
     @Override
     public void refresh(Graphics canvas) {}

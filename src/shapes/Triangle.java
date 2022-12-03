@@ -8,9 +8,9 @@ public class Triangle extends ShapeBase{
     int [] y;
     int[] x;
     public Triangle(){};
-    public Triangle(Point point1,Point point2,Point point3,String name){
+    public Triangle(Point point1,Point point2,Point point3){
        setPosition(point1);
-       setShapeName(name);
+       setShapeName("triangle");
        this.point2=point2;
        this.point3=point3;
          x=new int[]{getPosition().x,point2.x,point3.x};
@@ -60,7 +60,7 @@ public class Triangle extends ShapeBase{
         canvas.setColor(getColor());
         canvas.drawPolygon(x,y,3);
         if (getFillColor()!=null)
-        {   canvas.setColor(getColor());
+        {   canvas.setColor(getFillColor());
         canvas.fillPolygon(x,y,3);
 
         }
