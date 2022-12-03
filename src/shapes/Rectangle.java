@@ -9,8 +9,9 @@ public class Rectangle extends ShapeBase{
     public Rectangle(Point point,int width,int height,String name){
         this.height=height;
         this.width=width;
-        setPosition(point);
+        this.setPosition(point);
         setShapeName(name);
+        setColor(Color.black);
     }
     @Override
     public void draw(Graphics canvas) {
@@ -27,8 +28,10 @@ public class Rectangle extends ShapeBase{
 
     @Override
     public boolean contains(Point point) {
-        return false;
-    }
+        Point point1=new Point(getPosition().x,getPosition().y);
+        java.awt.Rectangle rectangle= new java.awt.Rectangle(getPosition().x,getPosition().y,width,height);
+        return rectangle.contains(point);
+            }
 
     @Override
     public void moveTo(Point point) {

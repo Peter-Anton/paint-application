@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Paint extends JFrame implements Node{
     private JButton linesegmentButton;
@@ -21,7 +22,6 @@ public class Paint extends JFrame implements Node{
     private JComboBox<String> comboBox1;
     ArrayList<Integer> values;
     DrawingEngineBase drawingEngine;
-    private  static Point selectedPoint;
     public Paint() {
         setContentPane(panel1);
         setVisible(true);
@@ -32,58 +32,66 @@ public class Paint extends JFrame implements Node{
         canavas.addMouseListener(new Click());
         canavas.addMouseMotionListener(new Drag());
         linesegmentButton.addActionListener(e -> {
-            LineSegment lineSegment = new LineSegment();
+            AtomicReference<LineSegment> lineSegment = new AtomicReference<>(new LineSegment());
             values = new ArrayList<>();
-            new LineData(values,lineSegment);
-            lineSegment = new LineSegment(new Point(values.get(0), values.get(1)), new Point(values.get(2), values.get(3)), "line_segment");
-            lineSegment.generateKey();
-            drawingEngine.addShape(lineSegment);
-            updateCombo(lineSegment);
-            drawingEngine.refresh(canavas.getGraphics());
-        });
+            LineData lineData=new LineData(values, lineSegment.get());
+            lineData.end().whenComplete((Boolean wait,Object o)->{
+                lineSegment.set(new LineSegment(new Point(values.get(0), values.get(1)), new Point(values.get(2), values.get(3)), "line_segment"));
+                lineSegment.get().generateKey();
+                drawingEngine.addShape(lineSegment.get());
+                updateCombo(lineSegment.get());
+                drawingEngine.refresh(canavas.getGraphics());
+            });
+            });
 
         triangleButton.addActionListener(e -> {
-            Triangle triangle = new Triangle();
+            AtomicReference<Triangle> triangle = new AtomicReference<>(new Triangle());
             values = new ArrayList<>();
-            setVisible(false);
-            TriangleData triangleData=new TriangleData(values,triangle);
+            TriangleData triangleData=new TriangleData(values, triangle.get());
+//            setVisible(false);
+//            triangleData.setParent(this);
+//            triangleData.setVisible(true);
+            triangleData.end().whenComplete((Boolean wait,Object o)->{
+                triangle.set(new Triangle(new Point(values.get(0), values.get(1)), new Point(values.get(2), values.get(3)), new Point(values.get(4), values.get(5)), "triangle"));
+                triangle.get().generateKey();
+                updateCombo(triangle.get());
+                drawingEngine.addShape(triangle.get());
+                drawingEngine.refresh(canavas.getGraphics());});
             triangleData.setVisible(true);
-            triangle = new Triangle(new Point(values.get(0), values.get(1)),new Point( values.get(2), values.get(3)),new Point(values.get(4),values.get(5)),"triangle");
-            triangle.generateKey();
-            updateCombo(triangle);
-            drawingEngine.addShape(triangle);
-            drawingEngine.refresh(canavas.getGraphics());
+
         });
 
         circleButton.addActionListener(e -> {
-            Circle circle = new Circle();
-
+            AtomicReference<Circle> circle = new AtomicReference<>(new Circle());
             values = new ArrayList<>();
-            CircleData circleData=new CircleData(values,circle);
-            setVisible(false);
-            circleData.setParent(this);
-            setVisible(true);
-
-         circle = new Circle(new Point(values.get(0), values.get(1)), values.get(2), "circle");
-            circle.generateKey();
-            drawingEngine.addShape(circle);
-            updateCombo(circle);
-            drawingEngine.refresh(canavas.getGraphics());
+            CircleData circleData=new CircleData(values, circle.get());
+//            setVisible(false);
+//            circleData.setParent(this);
+//            circleData.setVisible(true);
+            circleData.end().whenComplete((Boolean wait,Object o)->{
+                circle.set(new Circle(new Point(values.get(0), values.get(1)), values.get(2), "circle"));
+                circle.get().generateKey();
+                drawingEngine.addShape(circle.get());
+                updateCombo(circle.get());
+                drawingEngine.refresh(canavas.getGraphics());
+            });
         });
 
         rectangleButton.addActionListener(e -> {
-            Rectangle rectangle = new Rectangle();
-
+            AtomicReference<Rectangle> rectangle = new AtomicReference<>(new Rectangle());
             values = new ArrayList<>();
-            RectangleData rectangleData=new RectangleData(values,rectangle);
-            setVisible(false);
-            rectangleData.setParent(this);
-            rectangleData.setVisible(true);
-            rectangle = new Rectangle(new Point(values.get(0), values.get(1)), values.get(2), values.get(3), "rectangle");
-            rectangle.generateKey();
-            drawingEngine.addShape(rectangle);
-            updateCombo(rectangle);
-            drawingEngine.refresh(canavas.getGraphics());
+            RectangleData rectangleData=new RectangleData(values, rectangle.get());
+//            setVisible(false);
+//            rectangleData.setParent(this);
+//            rectangleData.setVisible(true);
+            rectangleData.end().whenComplete((Boolean wait,Object o)->{
+                rectangle.set(new Rectangle(new Point(values.get(0), values.get(1)), values.get(2), values.get(3), "rectangle"));
+                rectangle.get().generateKey();
+                drawingEngine.addShape(rectangle.get());
+                updateCombo(rectangle.get());
+                drawingEngine.refresh(canavas.getGraphics());
+            });
+
         });
 
         deleteButton.addActionListener(e -> {
@@ -178,18 +186,29 @@ public class Paint extends JFrame implements Node{
     public void setParent(Node node) {
 
     }
-    private static class Click extends MouseAdapter{
+    private  class Click extends MouseAdapter {
         //todo:select
         @Override
         public void mousePressed(MouseEvent e) {
-            selectedPoint=e.getPoint();
+            for (Shape shape : drawingEngine.getShapes()) {
+                if (shape.contains(e.getPoint())) {
+                    comboBox1.setSelectedItem(((ShapeBase)shape).getName_key());
+                }
+            }
         }
     }
-
-    private static class Drag extends MouseMotionAdapter{
+    private  class Drag extends MouseMotionAdapter{
         @Override
-        public void mouseDragged(MouseEvent e) {
-            //Todo:drag
+        public void mouseDragged(MouseEvent e)
+        {
+                Shape selectedShape=searchShape(comboBox1.getSelectedItem().toString());
+                if (selectedShape==null)
+                    return;
+
+                selectedShape.moveTo(e.getPoint());
+                selectedShape.setDraggingPoint(e.getPoint());
+                drawingEngine.refresh(canavas.getGraphics());
+
         }
     }
 
