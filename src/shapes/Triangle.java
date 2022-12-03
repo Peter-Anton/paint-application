@@ -30,21 +30,23 @@ public class Triangle extends ShapeBase{
 
         hasNegative = (d1 < 0) ||(d2 < 0) ||(d3 < 0);
         hasPositive = (d1 > 0) ||(d2 > 0) ||(d3 > 0);
-
         return !(hasNegative && hasPositive);
     }
 
     @Override
     public void moveTo(Point point) {
         Point oldPoint = getPosition();
-
         int x = point.x - oldPoint.x;
         int y = point.y - oldPoint.y;
         point2.x+=x;
         point3.x+=x;
-        point2.y+=+y;
-        point3.y+=+y;
+        point2.y+=y;
+        point3.y+=y;
         setPosition(point);
+        System.out.println(getPosition());
+        System.out.println(point2);
+        System.out.println(point3);
+
     }
     private double sign(Point p1, Point p2, Point p3) {
         return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
@@ -53,17 +55,15 @@ public class Triangle extends ShapeBase{
 
     @Override
     public void draw(Graphics canvas) {
-
-        canvas.setColor(getColor());
-        canvas.drawPolygon(x,y,3);
-    }
-
-    @Override
-    public void drawFill(Graphics canvas) {
         int[] x={getPosition().x,point2.x,point3.x};
         int [] y={getPosition().y,point2.y,point3.y};
         canvas.setColor(getColor());
+        canvas.drawPolygon(x,y,3);
+        if (getFillColor()!=null)
+        {   canvas.setColor(getColor());
         canvas.fillPolygon(x,y,3);
+
+        }
     }
 
 }

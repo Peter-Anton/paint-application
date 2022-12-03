@@ -42,8 +42,8 @@ public class TriangleData extends JFrame implements Node {
                 values.add(Integer.parseInt(textField4.getText()));
                 values.add(Integer.parseInt(textField5.getText()));
                 values.add(Integer.parseInt(textField6.getText()));
-//                ((JFrame)TriangleData.this.getParentNode()).setVisible(true);
-//                TriangleData.this.setVisible(false);
+                ((JFrame)this.getParentNode()).setVisible(true);
+               this.setVisible(false);
                 wait.complete(true);
                 dispose();
             }catch (Exception ex){

@@ -37,8 +37,8 @@ public class RectangleData extends JFrame implements Node {
                 values.add(Integer.parseInt(textField2.getText()));
                 values.add(Integer.parseInt(textField3.getText()));
                 values.add(Integer.parseInt(textField4.getText()));
-//            ((JFrame)RectangleData.this.getParentNode()).setVisible(true);
-//            RectangleData.this.setVisible(false);
+            ((JFrame)this.getParentNode()).setVisible(true);
+            this.setVisible(false);
                 wait.complete(true);
                 dispose();
             }catch (Exception ex){

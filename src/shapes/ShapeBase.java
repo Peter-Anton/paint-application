@@ -2,7 +2,7 @@ package shapes;
 
 import java.awt.*;
 
-public abstract class ShapeBase implements Shape,Moveable{
+public abstract class ShapeBase implements Shape{
     private Point position;
     private Color color;
     private Color fillColor;
@@ -19,7 +19,10 @@ public abstract class ShapeBase implements Shape,Moveable{
     }
 
     @Override
-    public void setColor(Color color) {this.color=color;}
+    public void setColor(Color color) {
+        this.color=color;
+        System.out.println("fi outline color");
+    }
     @Override
     public Color getColor() {
         if (color==null)
@@ -27,14 +30,15 @@ public abstract class ShapeBase implements Shape,Moveable{
         return color;
     }
     @Override
-    public void setFillColor(Color color) {this.fillColor=color;}
+    public void setFillColor(Color color) {this.fillColor=color;
+        System.out.println("et7t fill color");}
 
     @Override
     public Color getFillColor() {
+        System.out.println("fi fill color");
         return fillColor;
-    }
 
-    public abstract void drawFill(Graphics canvas);
+    }
 
     public void generateKey(){
         name_key=ShapeName+"_"+String.format("%02d",Key1++);

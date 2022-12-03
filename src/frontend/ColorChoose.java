@@ -5,7 +5,6 @@ import shapes.Shape;
 import javax.swing.*;
 import java.awt.*;
 public class ColorChoose extends JFrame implements Node {
-    Graphics canvas;
     DrawingEngineBase engine;
     java.awt.Color color;
     Shape shape;
@@ -20,14 +19,12 @@ public class ColorChoose extends JFrame implements Node {
     private JButton cancelButton;
     private Node parent;
 
-    public ColorChoose(DrawingEngineBase engine, Shape shape, Graphics canvas) {
+    public ColorChoose(DrawingEngineBase engine, Shape shape) {
         setContentPane(panel1);
         setVisible(true);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setSize(400, 300);
         setTitle("Drawing Application");
-
-        this.canvas = canvas;
         this.engine = engine;
         this.shape=shape;
 
@@ -45,7 +42,7 @@ public class ColorChoose extends JFrame implements Node {
         });
 
         setColorButton.addActionListener(e -> {
-            engine.refresh(canvas);
+            engine.refresh();
             ((JFrame) ColorChoose.this.getParentNode()).setVisible(true);
             ColorChoose.this.setVisible(false);
 

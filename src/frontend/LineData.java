@@ -34,10 +34,9 @@ public class LineData extends JFrame implements Node {
                 values.add(Integer.parseInt(textField2.getText()));
                 values.add(Integer.parseInt(textField3.getText()));
                 values.add(Integer.parseInt(textField4.getText()));
-//                ((JFrame)LineData.this.getParentNode()).setVisible(true);
-//                LineData.this.setVisible(false);
+                ((JFrame)this.getParentNode()).setVisible(true);
+               this.setVisible(false);
                 wait.complete(true);
-                dispose();
             }catch (Exception ex){
                 JOptionPane.showMessageDialog(this,"enter a valid data");
             }

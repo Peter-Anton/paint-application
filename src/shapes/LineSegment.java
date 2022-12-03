@@ -19,8 +19,6 @@ public class LineSegment extends ShapeBase{
         canvas.drawLine(getPosition().x, getPosition().y, point.x, point.y);
            }
 
-    @Override
-    public void drawFill(Graphics canvas) {}
 
     @Override
     public boolean contains(Point point) {

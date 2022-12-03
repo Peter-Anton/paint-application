@@ -9,19 +9,17 @@ public Circle(Point point,int radius,String name){
     this.radius=radius;
     this.setPosition(point);
     setShapeName(name);
-    setColor(Color.black);
 }
     @Override
     public void draw(Graphics canvas) {
             canvas.setColor(getColor());
             canvas.drawOval(getPosition().x, getPosition().y, radius*2,radius*2);
-    }
+            if (getFillColor()!=null) {
+                canvas.setColor(getFillColor());
+                canvas.fillOval(getPosition().x + 1, getPosition().y + 1, (radius * 2) - 2, (radius * 2) - 2);
+            }
+            }
 
-    public void drawFill(Graphics canvas)
-    {
-        canvas.setColor(getFillColor());
-        canvas.fillOval(getPosition().x+1, getPosition().y+1, (radius*2)-2,(radius*2)-2);
-    }
     @Override
     public boolean contains(Point point) {
         Point center=new Point();

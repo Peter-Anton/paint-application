@@ -1,11 +1,10 @@
 package frontend;
 
+import shapes.DrawingEngineBase;
 import shapes.Shape;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
@@ -19,7 +18,7 @@ public class CircleData extends JFrame implements Node{
     private JPanel panel1;
     private Node parent;
     CompletableFuture<Boolean> wait=new CompletableFuture<>();
-    public CircleData(ArrayList<Integer>values, Shape shape) {
+    public CircleData(ArrayList<Integer>values, Shape shape,DrawingEngineBase drawingEngineBase) {
         setContentPane(panel1);
         setVisible(true);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -29,8 +28,8 @@ public class CircleData extends JFrame implements Node{
                 values.add(Integer.parseInt(textField1.getText()));
                 values.add(Integer.parseInt(textField2.getText()));
                 values.add(Integer.parseInt(textField3.getText()));
-//                ((JFrame)CircleData.this.getParentNode()).setVisible(true);
-//                CircleData.this.setVisible(false);
+                ((JFrame)this.getParentNode()).setVisible(true);
+                this.setVisible(false);
                 wait.complete(true);
                 dispose();
             }catch (Exception ex){
@@ -41,10 +40,12 @@ public class CircleData extends JFrame implements Node{
         setColorButton.addActionListener(e -> {
             Color color = JColorChooser.showDialog(null,"choose outline color",Color.black);
             shape.setColor(color);
+            drawingEngineBase.refresh();
         });
         setFillColorButton.addActionListener(e -> {
             Color color = JColorChooser.showDialog(null,"choose fill color ",Color.black);
             shape.setFillColor(color);
+            drawingEngineBase.refresh();
         });
     }
 
