@@ -16,7 +16,7 @@ public class Rectangle extends ShapeBase{
     public void draw(Graphics canvas) {
         canvas.setColor(getColor());
         canvas.drawRect(getPosition().x,getPosition().y,width,height);
-        if(getColor()!=null)
+        if(getFillColor()!=null)
         {canvas.setColor(getFillColor());
         canvas.fillRect(getPosition().x+1,getPosition().y+1,width-1,height-1);
         }
@@ -31,7 +31,9 @@ public class Rectangle extends ShapeBase{
 
     @Override
     public void moveTo(Point point) {
-        if (!this.contains(point))
+        Point dragPoint=this.getDraggingPoint();
+        point.x+=(getPosition().x-dragPoint.x);
+        point.y+= (getPosition().y-dragPoint.y);
         setPosition(point);
     }
 }

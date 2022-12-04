@@ -32,6 +32,7 @@ public class Paint extends JFrame implements Node{
         setTitle("Drawing Application");
         drawingEngine = new DrawingEngineBase();
         canavas.add(drawingEngine);
+        drawingEngine.setBackground(Color.white);
         drawingEngine.addMouseListener(new Click());
         drawingEngine.addMouseMotionListener(new Drag());
         comboBox1.addItemListener(event -> {
@@ -105,15 +106,14 @@ public class Paint extends JFrame implements Node{
         rectangleButton.addActionListener(e -> {
             AtomicReference<Rectangle> rectangle = new AtomicReference<>(new Rectangle());
             values = new ArrayList<>();
-            RectangleData rectangleData=new RectangleData(values, rectangle.get());
+            RectangleData rectangleData=new RectangleData();
             setVisible(false);
             rectangleData.setParent(this);
             rectangleData.setVisible(true);
-            rectangleData.end().whenComplete((Boolean wait,Object o)->{
-                rectangle.set(new Rectangle(new Point(values.get(0), values.get(1)), values.get(2), values.get(3)));
-                rectangle.get().generateKey();
-                drawingEngine.addShape(rectangle.get());
-                updateCombo(rectangle.get());
+            rectangleData.end().whenComplete((Shape shape,Object o)->{
+                ((ShapeBase)shape).generateKey();
+                drawingEngine.addShape(shape);
+                updateCombo(shape);
                 drawingEngine.refresh();
             });
 
@@ -212,8 +212,6 @@ public class Paint extends JFrame implements Node{
 
     }
     private  class Click extends MouseAdapter {
-
-
         @Override
         public void mousePressed(MouseEvent e) {
             selectedShape=null;
@@ -221,6 +219,7 @@ public class Paint extends JFrame implements Node{
                 if (shape.contains(e.getPoint())) {
                     comboBox1.setSelectedItem(((ShapeBase)shape).getName_key());
                     selectedShape=shape;
+                    selectedShape.setDraggingPoint(e.getPoint());
                 }
             }
         }

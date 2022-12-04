@@ -1,5 +1,6 @@
 package frontend;
 
+import shapes.Rectangle;
 import shapes.Shape;
 
 import javax.swing.*;
@@ -20,30 +21,35 @@ public class RectangleData extends JFrame implements Node {
     private JPanel panel1;
     private JButton cancelButton;
     private Node parent;
-    CompletableFuture<Boolean> wait=new CompletableFuture<>();
-    public RectangleData(ArrayList<Integer> values, Shape shape) {
+    private int height;
+    private int width;
+    private Point point=new Point();
+    Color colorOut;
+    Color colorFill;
+    CompletableFuture<Shape> wait=new CompletableFuture<>();
+    public RectangleData() {
         setContentPane(panel1);
         setVisible(true);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setSize(400, 300);
         setColorButton.addActionListener(e -> {
-            Color color = JColorChooser.showDialog(this,"choose outline color",Color.black);
-            shape.setColor(color);
+             colorOut = JColorChooser.showDialog(this,"choose outline color",Color.black);
         });
         setFillColorButton.addActionListener(e -> {
-            Color color = JColorChooser.showDialog(this,"choose fill color ",Color.black);
-            shape.setFillColor(color);
+             colorFill = JColorChooser.showDialog(this,"choose fill color ",Color.black);
         });
         createRectangleButton.addActionListener(e -> {
             try {
-                values.add(Integer.parseInt(textField1.getText()));
-                values.add(Integer.parseInt(textField2.getText()));
-                values.add(Integer.parseInt(textField3.getText()));
-                values.add(Integer.parseInt(textField4.getText()));
-            ((JFrame)this.getParentNode()).setVisible(true);
+                point.x=Integer.parseInt(textField1.getText());
+                point.y=Integer.parseInt(textField2.getText());
+                width=Integer.parseInt(textField3.getText());
+                height=Integer.parseInt(textField4.getText());
+                ((JFrame)this.getParentNode()).setVisible(true);
+                Rectangle rectangle=new Rectangle(point,width,height);
+                rectangle.setColor(colorOut);
+                rectangle.setFillColor(colorFill);
             this.setVisible(false);
-                wait.complete(true);
-                dispose();
+                wait.complete(rectangle);
             }catch (Exception ex){
                 JOptionPane.showMessageDialog(this,"enter data");
             }
@@ -64,7 +70,7 @@ public class RectangleData extends JFrame implements Node {
     public void setParent(Node node) {
         parent=node;
     }
-    public CompletableFuture<Boolean> end(){
+    public CompletableFuture<Shape> end(){
         return wait;
     }
 }

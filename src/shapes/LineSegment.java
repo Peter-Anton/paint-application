@@ -1,8 +1,5 @@
 package shapes;
-
-
 import java.awt.*;
-
 public class LineSegment extends ShapeBase{
     Point point;
 
@@ -30,6 +27,9 @@ public class LineSegment extends ShapeBase{
     @Override
     public void moveTo(Point point) {
         Point oldPoint = getPosition();
+        Point dragPoint=this.getDraggingPoint();
+        point.x+=(getPosition().x-dragPoint.x);
+        point.y+= (getPosition().y-dragPoint.y);
         int x = point.x - oldPoint.x;
         int y = point.y - oldPoint.y;
         this.point.x+=x;

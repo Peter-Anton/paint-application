@@ -36,6 +36,9 @@ public class Triangle extends ShapeBase{
     @Override
     public void moveTo(Point point) {
         Point oldPoint = getPosition();
+        Point dragPoint=this.getDraggingPoint();
+        point.x+=(oldPoint.x-dragPoint.x);
+        point.y+= (oldPoint.y-dragPoint.y);
         int x = point.x - oldPoint.x;
         int y = point.y - oldPoint.y;
         point2.x+=x;

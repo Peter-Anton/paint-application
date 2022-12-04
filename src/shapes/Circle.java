@@ -31,6 +31,9 @@ public Circle(Point point,int radius){
 
     @Override
     public void moveTo(Point point) {
+        Point dragPoint=this.getDraggingPoint();
+        point.x+=(getPosition().x-dragPoint.x);
+        point.y+= (getPosition().y-dragPoint.y);
         setPosition(point);
     }
 

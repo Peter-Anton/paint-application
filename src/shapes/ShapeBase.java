@@ -21,7 +21,6 @@ public abstract class ShapeBase implements Shape{
     @Override
     public void setColor(Color color) {
         this.color=color;
-        System.out.println("fi outline color");
     }
     @Override
     public Color getColor() {
@@ -30,12 +29,10 @@ public abstract class ShapeBase implements Shape{
         return color;
     }
     @Override
-    public void setFillColor(Color color) {this.fillColor=color;
-        System.out.println("et7t fill color");}
+    public void setFillColor(Color color) {this.fillColor=color;}
 
     @Override
     public Color getFillColor() {
-        System.out.println("fi fill color");
         return fillColor;
 
     }
