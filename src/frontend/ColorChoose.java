@@ -4,6 +4,8 @@ import shapes.DrawingEngineBase;
 import shapes.Shape;
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.CompletableFuture;
+
 public class ColorChoose extends JFrame implements Node {
     DrawingEngineBase engine;
     java.awt.Color color;
@@ -18,7 +20,7 @@ public class ColorChoose extends JFrame implements Node {
     private JPanel outlinesColorpanel;
     private JButton cancelButton;
     private Node parent;
-
+    CompletableFuture<Boolean> colorize=new CompletableFuture<>();
     public ColorChoose(DrawingEngineBase engine, Shape shape) {
         setContentPane(panel1);
         setVisible(true);
@@ -27,11 +29,9 @@ public class ColorChoose extends JFrame implements Node {
         setTitle("Drawing Application");
         this.engine = engine;
         this.shape=shape;
-
         fillColorButton.addActionListener(e -> {
             if (fillColorCheckBox.isSelected()){
-            color = Color.BLACK;
-            color = JColorChooser.showDialog(this,"Select a Color",color);
+            color = JColorChooser.showDialog(this,"Select a Color",null);
             fillColorPanel.setBackground(color);
             shape.setFillColor(color);
             return;
@@ -45,6 +45,8 @@ public class ColorChoose extends JFrame implements Node {
             engine.refresh();
             ((JFrame) ColorChoose.this.getParentNode()).setVisible(true);
             ColorChoose.this.setVisible(false);
+            colorize.complete(true);
+
 
         });
 
@@ -73,6 +75,9 @@ public class ColorChoose extends JFrame implements Node {
     @Override
     public void setParent(Node node) {
         this.parent=node;
-
     }
+    public CompletableFuture<Boolean> end(){
+        return colorize;
+    }
+
 }

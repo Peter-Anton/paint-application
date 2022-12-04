@@ -23,7 +23,7 @@ private  ArrayList<ShapeBase> shapes=new ArrayList<>();
     }
 
 
-        public void paint (Graphics graphics)
+        public void paintComponent (Graphics graphics)
         {
             super.paintComponent(graphics);
 

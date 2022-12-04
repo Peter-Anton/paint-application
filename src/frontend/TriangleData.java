@@ -1,6 +1,7 @@
 package frontend;
 
 import shapes.Shape;
+import shapes.Triangle;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,31 +23,35 @@ public class TriangleData extends JFrame implements Node {
     private JPanel panel1;
     private JButton cancelButton;
     private Node parent;
-    CompletableFuture<Boolean> wait=new CompletableFuture<>();
-    public TriangleData(ArrayList<Integer>values, Shape shape) {
+    private Point point1;
+    private Point point2;
+    private Point point3;
+    private Color colorOut;
+    private Color colorFill;
+
+    CompletableFuture<Shape> shape=new CompletableFuture<>();
+    public TriangleData() {
         setContentPane(panel1);
         setVisible(true);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setSize(400, 300);
         setColorButton.addActionListener(e -> {
-            Color color = JColorChooser.showDialog(null,"choose outline color",Color.black);
-            shape.setColor(color);
+            colorOut = JColorChooser.showDialog(null,"choose outline color",Color.black);
         });
         setFillColorButton.addActionListener(e -> {
-            Color color = JColorChooser.showDialog(null,"choose fill color ",Color.black);
-            shape.setFillColor(color);
+             colorFill = JColorChooser.showDialog(null,"choose fill color ",Color.black);
         });
         createTriangleButton.addActionListener(e -> {
             try {
-                values.add(Integer.parseInt(textField1.getText()));
-                values.add(Integer.parseInt(textField2.getText()));
-                values.add(Integer.parseInt(textField3.getText()));
-                values.add(Integer.parseInt(textField4.getText()));
-                values.add(Integer.parseInt(textField5.getText()));
-                values.add(Integer.parseInt(textField6.getText()));
-                ((JFrame)this.getParentNode()).setVisible(true);
+                point1=new Point(Integer.parseInt(textField1.getText()),Integer.parseInt(textField2.getText()));
+                point2=new Point(Integer.parseInt(textField3.getText()),Integer.parseInt(textField4.getText()));
+                point3=new Point(Integer.parseInt(textField5.getText()),Integer.parseInt(textField6.getText()));
+                Triangle triangle=new Triangle(point1,point2,point3);
+                triangle.setColor(colorOut);
+                triangle.setFillColor(colorFill);
+            ((JFrame)this.getParentNode()).setVisible(true);
                this.setVisible(false);
-                wait.complete(true);
+                shape.complete(triangle);
                 dispose();
             }catch (Exception ex){
                 JOptionPane.showMessageDialog(this,"enter data");
@@ -69,7 +74,7 @@ public class TriangleData extends JFrame implements Node {
     public void setParent(Node node) {
         parent=node;
     }
-    public CompletableFuture<Boolean> end(){
-        return wait;
+    public CompletableFuture<Shape> end(){
+        return shape;
     }
 }

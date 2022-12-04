@@ -1,5 +1,6 @@
 package frontend;
 
+import shapes.LineSegment;
 import shapes.Shape;
 
 import javax.swing.*;
@@ -19,25 +20,28 @@ public class LineData extends JFrame implements Node {
     private JPanel panel1;
     private JButton cancelButton;
     private Node parent;
-    CompletableFuture<Boolean> wait=new CompletableFuture<>();
-    public LineData(ArrayList<Integer> values, Shape shape) {
+    private Point point1;
+    private Point point2;
+    private Color colorOut;
+    CompletableFuture<Shape> shape=new CompletableFuture<>();
+    public LineData() {
         setContentPane(panel1);
         setVisible(true);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setSize(400, 300);
         setColorButton.addActionListener(e -> {
-            Color color = JColorChooser.showDialog(null,"choose outline color",Color.black);
-            shape.setColor(color);
+            colorOut= JColorChooser.showDialog(null,"choose outline color",Color.black);
+
         });
         createLineButton.addActionListener(e -> {
             try {
-                values.add(Integer.parseInt(textField1.getText()));
-                values.add(Integer.parseInt(textField2.getText()));
-                values.add(Integer.parseInt(textField3.getText()));
-                values.add(Integer.parseInt(textField4.getText()));
+                point1=new Point(Integer.parseInt(textField1.getText()),Integer.parseInt(textField2.getText()));
+                point2=new Point(Integer.parseInt(textField3.getText()),Integer.parseInt(textField4.getText()));
+                LineSegment lineSegment=new LineSegment(point1,point2);
+                lineSegment.setColor(colorOut);
                 ((JFrame)this.getParentNode()).setVisible(true);
                this.setVisible(false);
-                wait.complete(true);
+                shape.complete(lineSegment);
             }catch (Exception ex){
                 JOptionPane.showMessageDialog(this,"enter a valid data");
             }
@@ -59,7 +63,7 @@ public class LineData extends JFrame implements Node {
         parent=node;
 
     }
-    public CompletableFuture<Boolean> end(){
-        return wait;
+    public CompletableFuture<Shape> end(){
+        return shape;
     }
 }

@@ -1,14 +1,12 @@
 package frontend;
 
 import shapes.*;
-import shapes.Rectangle;
 import shapes.Shape;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Paint extends JFrame implements Node{
     private JButton linesegmentButton;
@@ -51,33 +49,29 @@ public class Paint extends JFrame implements Node{
         });
 
         linesegmentButton.addActionListener(e -> {
-            AtomicReference<LineSegment> lineSegment = new AtomicReference<>(new LineSegment());
             values = new ArrayList<>();
-            LineData lineData=new LineData(values, lineSegment.get());
+            LineData lineData=new LineData();
             setVisible(false);
             lineData.setParent(this);
             lineData.setVisible(true);
-            lineData.end().whenComplete((Boolean wait,Object o)->{
-                lineSegment.set(new LineSegment(new Point(values.get(0), values.get(1)), new Point(values.get(2), values.get(3))));
-                lineSegment.get().generateKey();
-                drawingEngine.addShape(lineSegment.get());
-                updateCombo(lineSegment.get());
+            lineData.end().whenComplete((Shape shape,Object o)->{
+                ((ShapeBase)shape).generateKey();
+                drawingEngine.addShape(shape);
+                updateCombo(shape);
                 drawingEngine.refresh();
             });
             });
 
         triangleButton.addActionListener(e -> {
-            AtomicReference<Triangle> triangle = new AtomicReference<>(new Triangle());
             values = new ArrayList<>();
-            TriangleData triangleData=new TriangleData(values, triangle.get());
+            TriangleData triangleData=new TriangleData();
             setVisible(false);
             triangleData.setParent(this);
             triangleData.setVisible(true);
-            triangleData.end().whenComplete((Boolean wait,Object o)->{
-                triangle.set(new Triangle(new Point(values.get(0), values.get(1)), new Point(values.get(2), values.get(3)), new Point(values.get(4), values.get(5))));
-                triangle.get().generateKey();
-                updateCombo(triangle.get());
-                drawingEngine.addShape(triangle.get());
+            triangleData.end().whenComplete((Shape shape,Object o)->{
+                ((ShapeBase)shape).generateKey();
+                updateCombo(shape);
+                drawingEngine.addShape(shape);
                 drawingEngine.refresh();
 
             });
@@ -86,25 +80,18 @@ public class Paint extends JFrame implements Node{
         });
 
         circleButton.addActionListener(e -> {
-            AtomicReference<Circle> circle = new AtomicReference<>(new Circle());
             values = new ArrayList<>();
-            CircleData circleData=new CircleData(values, circle.get(),drawingEngine);
-            setVisible(false);
-            circleData.setParent(this);
-            circleData.setVisible(true);
-            circleData.end().whenComplete((Boolean wait,Object o)->{
-                setVisible(true);
-                circleData.dispose();
-                circle.set(new Circle(new Point(values.get(0), values.get(1)), values.get(2)));
-                circle.get().generateKey();
-                drawingEngine.addShape(circle.get());
-                updateCombo(circle.get());
+            CircleData circleData=new CircleData();
+            setVisible(false);circleData.setParent(this);circleData.setVisible(true);
+            circleData.end().whenComplete((Shape shape,Object o)->{
+                ((ShapeBase)shape).generateKey();
+                drawingEngine.addShape(shape);
+                updateCombo(shape);
                 drawingEngine.refresh();
             });
         });
 
         rectangleButton.addActionListener(e -> {
-            AtomicReference<Rectangle> rectangle = new AtomicReference<>(new Rectangle());
             values = new ArrayList<>();
             RectangleData rectangleData=new RectangleData();
             setVisible(false);
@@ -132,9 +119,9 @@ public class Paint extends JFrame implements Node{
             Shape shapeColor = searchShape((String) comboBox1.getSelectedItem());
             if (shapeColor != null) {
                 ColorChoose colorChoose1=new ColorChoose(drawingEngine,shapeColor);
-                colorChoose1.setTitle("Colorize "+comboBox1.getSelectedItem());
                 colorChoose1.setParent(this);
-                drawingEngine.refresh();
+                colorChoose1.setTitle("Colorize "+comboBox1.getSelectedItem());
+                    drawingEngine.refresh();
             }
 
 
