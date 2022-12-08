@@ -3,11 +3,9 @@ import java.awt.*;
 public class LineSegment extends ShapeBase{
     Point point;
 
-    public LineSegment(){}
     public LineSegment(Point point1,Point point2){
+        super(point1);
         point=point2;
-        setPosition(point1);
-        setShapeName("line");
     }
     @Override
     public void draw(Graphics canvas) {
@@ -37,5 +35,26 @@ public class LineSegment extends ShapeBase{
         setPosition(point);
 
 
+    }
+
+    @Override
+    public String toString() {
+        return "line-"+uniqueKey1;
+    }
+
+    @Override
+    public Point[] getPoint() {
+        return new Point[]{getPosition(),point};
+    }
+
+    @Override
+    public void resize(Point cornerPoint, Point dragedPoint) {
+        Point[] points=getPoint();
+        if (points[0].equals(cornerPoint)) {
+            setPosition(dragedPoint);
+        }
+        if (points[1].equals(cornerPoint)) {
+            point=dragedPoint;
+        }
     }
 }

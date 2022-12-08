@@ -1,7 +1,7 @@
 package shapes;
 import java.awt.*;
 
-public interface Shape extends Moveable {
+public interface Shape extends Moveable,Resize,Cloneable {
      void setPosition(Point position);
      Point getPosition();
      void setColor(Color color);

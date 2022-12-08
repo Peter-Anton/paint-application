@@ -2,31 +2,32 @@ package shapes;
 
 import java.awt.*;
 
-public class Rectangle extends ShapeBase{
-    int width;
-    int height;
-    public Rectangle(Point point,int width,int height){
-        super(point);
-        this.height=height;
-        this.width=width;
-
-    }
+public class Oval extends ShapeBase{
+private int height,width;
+public Oval(Point point, int height, int width){
+    super(point);
+    this.height=height;
+    this.width=width;
+}
     @Override
     public void draw(Graphics canvas) {
-        canvas.setColor(getColor());
-        canvas.drawRect(getPosition().x,getPosition().y,width,height);
-        if(getFillColor()!=null)
-        {canvas.setColor(getFillColor());
-        canvas.fillRect(getPosition().x+1,getPosition().y+1,width-1,height-1);
-        }
-
-    }
+            canvas.setColor(getColor());
+            canvas.drawOval(getPosition().x, getPosition().y, width,height);
+            if (getFillColor()!=null) {
+                canvas.setColor(getFillColor());
+                canvas.fillOval(getPosition().x + 1, getPosition().y + 1, width - 2, height - 2);
+            }
+            }
 
     @Override
     public boolean contains(Point point) {
-        java.awt.Rectangle rectangle= new java.awt.Rectangle(getPosition().x,getPosition().y,width,height);
-        return rectangle.contains(point);
-            }
+        Point center=new Point();
+        center.x=getPosition().x+(width/2);
+        center.y=getPosition().y+(height/2);
+        return Math.abs(center.x - point.x) < (width / 2) && Math.abs(center.y - point.y) < (height / 2);
+    }
+
+
 
     @Override
     public void moveTo(Point point) {
@@ -36,8 +37,9 @@ public class Rectangle extends ShapeBase{
         setPosition(point);
     }
 
+
     public String toString(){
-        return "rectangle-" + uniqueKey1;
+        return "oval-" + uniqueKey1;
     }
 
     @Override
@@ -51,6 +53,6 @@ public class Rectangle extends ShapeBase{
 
     @Override
     public void resize(Point CornerPoint, Point dragedPoint) {
-        //TODO:tommorow
+        //TODo:Tommorow
     }
 }

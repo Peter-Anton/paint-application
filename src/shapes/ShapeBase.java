@@ -2,14 +2,16 @@ package shapes;
 
 import java.awt.*;
 
-public abstract class ShapeBase implements Shape{
+public abstract class ShapeBase implements Shape,Resize{
     private Point position;
     private Color color;
     private Color fillColor;
-    private   String name_key;
-    private String ShapeName;
     private  static int Key1=0;
+    protected int uniqueKey1 = Key1 ++;
     private Point draggingPoint;
+    public ShapeBase(Point position){
+    setPosition(position);
+    }
     @Override
     public void setPosition(Point position) {this.position = position;}
 
@@ -37,16 +39,6 @@ public abstract class ShapeBase implements Shape{
 
     }
 
-    public void generateKey(){
-        name_key=ShapeName+"_"+String.format("%02d",Key1++);
-    }
-    public String getName_key() {
-        return name_key;
-    }
-    public void setShapeName(String shapeName) {
-        ShapeName = shapeName;
-    }
-
     @Override
     public void setDraggingPoint(Point point) {
         draggingPoint=point;
@@ -56,4 +48,14 @@ public abstract class ShapeBase implements Shape{
     public Point getDraggingPoint() {
         return draggingPoint;
     }
+
+    @Override
+   public Object clone() throws CloneNotSupportedException {
+        ShapeBase clone= (ShapeBase) super.clone();
+        clone.uniqueKey1=Key1++;
+        return clone;
+    }
+
+    @Override
+    public abstract Point[] getPoint();
 }

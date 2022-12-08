@@ -2,7 +2,7 @@ package shapes;
 
 import java.awt.*;
 
-public interface Moveable {
+public interface Moveable  {
      void setDraggingPoint(Point point);
      Point getDraggingPoint();
      boolean contains(Point point);

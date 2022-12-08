@@ -5,9 +5,6 @@ import shapes.Shape;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
 public class LineData extends JFrame implements Node {
@@ -24,11 +21,14 @@ public class LineData extends JFrame implements Node {
     private Point point2;
     private Color colorOut;
     CompletableFuture<Shape> shape=new CompletableFuture<>();
+
     public LineData() {
         setContentPane(panel1);
         setVisible(true);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setSize(400, 300);
+        JRootPane rootPane=SwingUtilities.getRootPane(panel1);
+        rootPane.setDefaultButton(createLineButton);
         setColorButton.addActionListener(e -> {
             colorOut= JColorChooser.showDialog(null,"choose outline color",Color.black);
 

@@ -1,26 +1,26 @@
 package frontend;
 
-import shapes.*;
 import shapes.Shape;
+import shapes.ShapeBase;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-
 public class Paint extends JFrame implements Node{
     private JButton linesegmentButton;
     private JPanel panel1;
     private JPanel canavas;
-    private JButton circleButton;
+    private JButton OvalButton;
     private JButton rectangleButton;
     private JButton triangleButton;
     private JButton colorizeButton;
     private JButton deleteButton;
     private JComboBox<String> comboBox1;
-    ArrayList<Integer> values;
+    private JButton copyButton;
     DrawingEngineBase drawingEngine;
-    Shape selectedShape;
+    protected Shape selectedShape;
+    protected Shape copyShape;
+    Point resize;
 
     public Paint() {
         setContentPane(panel1);
@@ -33,6 +33,7 @@ public class Paint extends JFrame implements Node{
         drawingEngine.setBackground(Color.white);
         drawingEngine.addMouseListener(new Click());
         drawingEngine.addMouseMotionListener(new Drag());
+
         comboBox1.addItemListener(event -> {
             if (event.getStateChange() != ItemEvent.SELECTED || !comboBox1.hasFocus()) {
                 return;
@@ -40,7 +41,7 @@ public class Paint extends JFrame implements Node{
             String shapeKey = (String) event.getItem();
             Shape selectShape = null;
             for (Shape shape : drawingEngine.getShapes()) {
-                if(((ShapeBase)shape).getName_key().equals(shapeKey)) {
+                if(shape.toString().equals(shapeKey)) {
                     selectShape = shape;
                     break;
                 }
@@ -49,13 +50,12 @@ public class Paint extends JFrame implements Node{
         });
 
         linesegmentButton.addActionListener(e -> {
-            values = new ArrayList<>();
             LineData lineData=new LineData();
             setVisible(false);
             lineData.setParent(this);
             lineData.setVisible(true);
             lineData.end().whenComplete((Shape shape,Object o)->{
-                ((ShapeBase)shape).generateKey();
+                shape.toString();
                 drawingEngine.addShape(shape);
                 updateCombo(shape);
                 drawingEngine.refresh();
@@ -63,13 +63,11 @@ public class Paint extends JFrame implements Node{
             });
 
         triangleButton.addActionListener(e -> {
-            values = new ArrayList<>();
             TriangleData triangleData=new TriangleData();
             setVisible(false);
             triangleData.setParent(this);
             triangleData.setVisible(true);
             triangleData.end().whenComplete((Shape shape,Object o)->{
-                ((ShapeBase)shape).generateKey();
                 updateCombo(shape);
                 drawingEngine.addShape(shape);
                 drawingEngine.refresh();
@@ -79,12 +77,10 @@ public class Paint extends JFrame implements Node{
 
         });
 
-        circleButton.addActionListener(e -> {
-            values = new ArrayList<>();
-            CircleData circleData=new CircleData();
+        OvalButton.addActionListener(e -> {
+            OvalData circleData=new OvalData();
             setVisible(false);circleData.setParent(this);circleData.setVisible(true);
             circleData.end().whenComplete((Shape shape,Object o)->{
-                ((ShapeBase)shape).generateKey();
                 drawingEngine.addShape(shape);
                 updateCombo(shape);
                 drawingEngine.refresh();
@@ -92,13 +88,11 @@ public class Paint extends JFrame implements Node{
         });
 
         rectangleButton.addActionListener(e -> {
-            values = new ArrayList<>();
             RectangleData rectangleData=new RectangleData();
             setVisible(false);
             rectangleData.setParent(this);
             rectangleData.setVisible(true);
             rectangleData.end().whenComplete((Shape shape,Object o)->{
-                ((ShapeBase)shape).generateKey();
                 drawingEngine.addShape(shape);
                 updateCombo(shape);
                 drawingEngine.refresh();
@@ -172,16 +166,30 @@ public class Paint extends JFrame implements Node{
                     }
         });
 
+        copyButton.addActionListener(e -> {
+            try {
+                copyShape= (Shape) ((ShapeBase)selectedShape).clone();
+                copyShape.toString();
+                drawingEngine.addShape(copyShape);
+                updateCombo(copyShape);
+                drawingEngine.refresh();
+
+            } catch (CloneNotSupportedException ex) {
+                throw new RuntimeException(ex);
+            }
+
+        });
     }
 
+
     private void updateCombo(Shape shape) {
-        comboBox1.addItem(((ShapeBase)shape).getName_key());
+        comboBox1.addItem(shape.toString());
     }
 
     private Shape searchShape(String Key) {
         Shape[] shapes = drawingEngine.getShapes();
         for (Shape shap : shapes) {
-            if (Key.equals(((ShapeBase)shap).getName_key())) {
+            if (Key.equals(shap.toString())) {
                 return shap;
             }
 
@@ -200,15 +208,24 @@ public class Paint extends JFrame implements Node{
     }
     private  class Click extends MouseAdapter {
         @Override
+        public void mouseReleased(MouseEvent e) {
+            resize=null;
+
+        }
+
+        @Override
         public void mousePressed(MouseEvent e) {
             selectedShape=null;
+            drawingEngine.setShape(null);
             for (Shape shape : drawingEngine.getShapes()) {
                 if (shape.contains(e.getPoint())) {
-                    comboBox1.setSelectedItem(((ShapeBase)shape).getName_key());
+                    comboBox1.setSelectedItem(shape.toString());
                     selectedShape=shape;
+                    drawingEngine.setShape(selectedShape);
                     selectedShape.setDraggingPoint(e.getPoint());
                 }
             }
+            drawingEngine.refresh();
         }
     }
     private  class Drag extends MouseMotionAdapter{
@@ -217,9 +234,19 @@ public class Paint extends JFrame implements Node{
         {
             if (selectedShape==null)
                 return;
+
+
             selectedShape.moveTo(e.getPoint());
                 selectedShape.setDraggingPoint(e.getPoint());
-                drawingEngine.refresh();
+            for (Point point1: selectedShape.getPoint()) {
+                if (point1.distance(e.getPoint())<=5)
+                {
+                    resize=point1;
+                    selectedShape.resize(resize,e.getPoint());
+                }
+            }
+            drawingEngine.refresh();
         }
     }
+
 }

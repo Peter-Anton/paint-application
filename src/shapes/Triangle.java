@@ -7,14 +7,16 @@ public class Triangle extends ShapeBase{
   Point point3;
     int [] y;
     int[] x;
-    public Triangle(){};
     public Triangle(Point point1,Point point2,Point point3){
-       setPosition(point1);
-       setShapeName("triangle");
+        super(point1);
        this.point2=point2;
        this.point3=point3;
          x=new int[]{getPosition().x,point2.x,point3.x};
          y=new int[]{getPosition().y,point2.y,point3.y};
+    }
+
+    public String toString(){
+        return "triangle-" + uniqueKey1;
     }
 
     @Override
@@ -65,4 +67,22 @@ public class Triangle extends ShapeBase{
         }
     }
 
+    @Override
+    public Point[] getPoint() {
+        return new Point[]{getPosition(),point2,point3};
+    }
+
+    @Override
+    public void resize(Point cornerpoint, Point dragedPoint) {
+        Point[] points=getPoint();
+        if (points[0].equals(cornerpoint)) {
+            setPosition(dragedPoint);
+        }
+        if (points[1].equals(cornerpoint)) {
+             point2=dragedPoint;
+        }
+        if (points[2].equals(cornerpoint)) {
+            point3=dragedPoint;
+        }
+    }
 }

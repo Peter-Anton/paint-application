@@ -5,9 +5,7 @@ import shapes.Triangle;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
+
 import java.util.concurrent.CompletableFuture;
 
 public class TriangleData extends JFrame implements Node {
@@ -28,13 +26,14 @@ public class TriangleData extends JFrame implements Node {
     private Point point3;
     private Color colorOut;
     private Color colorFill;
-
     CompletableFuture<Shape> shape=new CompletableFuture<>();
     public TriangleData() {
         setContentPane(panel1);
         setVisible(true);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setSize(400, 300);
+        JRootPane rootPane=SwingUtilities.getRootPane(panel1);
+        rootPane.setDefaultButton(createTriangleButton);
         setColorButton.addActionListener(e -> {
             colorOut = JColorChooser.showDialog(null,"choose outline color",Color.black);
         });

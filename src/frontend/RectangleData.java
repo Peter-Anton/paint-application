@@ -5,9 +5,6 @@ import shapes.Shape;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
 public class RectangleData extends JFrame implements Node {
@@ -23,15 +20,19 @@ public class RectangleData extends JFrame implements Node {
     private Node parent;
     private int height;
     private int width;
-    private Point point=new Point();
+    private final Point point=new Point();
     Color colorOut;
     Color colorFill;
     CompletableFuture<Shape> wait=new CompletableFuture<>();
+
     public RectangleData() {
         setContentPane(panel1);
         setVisible(true);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setSize(400, 300);
+
+        JRootPane rootPane=SwingUtilities.getRootPane(panel1);
+        rootPane.setDefaultButton(createRectangleButton);
         setColorButton.addActionListener(e -> {
              colorOut = JColorChooser.showDialog(this,"choose outline color",Color.black);
         });
@@ -44,6 +45,8 @@ public class RectangleData extends JFrame implements Node {
                 point.y=Integer.parseInt(textField2.getText());
                 width=Integer.parseInt(textField3.getText());
                 height=Integer.parseInt(textField4.getText());
+                if (width<=0||height<=0)
+                    throw new NumberFormatException();
                 ((JFrame)this.getParentNode()).setVisible(true);
                 Rectangle rectangle=new Rectangle(point,width,height);
                 rectangle.setColor(colorOut);
@@ -51,7 +54,7 @@ public class RectangleData extends JFrame implements Node {
             this.setVisible(false);
                 wait.complete(rectangle);
             }catch (Exception ex){
-                JOptionPane.showMessageDialog(this,"enter data");
+                JOptionPane.showMessageDialog(this,"enter positive valid data");
             }
 
         });
