@@ -5,9 +5,6 @@ import shapes.Shape;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
 public class RectangleData extends JFrame implements Node {

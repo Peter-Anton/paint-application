@@ -1,7 +1,6 @@
 package frontend;
 
 import shapes.Circle;
-import shapes.DrawingEngineBase;
 import shapes.Shape;
 
 import javax.swing.*;

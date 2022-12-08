@@ -1,5 +1,7 @@
 package shapes;
 
+import org.json.simple.JSONObject;
+
 import java.awt.*;
 
 public class Triangle extends ShapeBase{
@@ -63,6 +65,34 @@ public class Triangle extends ShapeBase{
         canvas.fillPolygon(x,y,3);
 
         }
+    }
+
+
+    public static Triangle parseShapeObject(JSONObject shape)
+    {
+        JSONObject shapeObj = (JSONObject) shape.get("Triangle");
+        Triangle triangle = new Triangle();
+        triangle.setPosition((Point) shapeObj.get("position"));
+        triangle.point2 = (Point) shapeObj.get("point2");
+        triangle.point3 = (Point) shapeObj.get("point3");
+        triangle.setColor((Color) shapeObj.get("color"));
+        triangle.setFillColor((Color) shapeObj.get("fillColor"));
+
+        return triangle;
+    }
+
+
+    public JSONObject shapeToJson(Triangle t) {
+        JSONObject triangle = new JSONObject();
+        triangle.put("position",t.getPosition());
+        triangle.put("point2",t.point2);
+        triangle.put("point3",t.point3);
+        triangle.put("color",t.getColor());
+        triangle.put("fillColor",t.getFillColor());
+
+        JSONObject triangleObj = new JSONObject();
+        triangleObj.put("Triangle",triangle);
+        return triangleObj;
     }
 
 }

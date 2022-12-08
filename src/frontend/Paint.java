@@ -1,14 +1,22 @@
 package frontend;
 
-import shapes.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import shapes.DrawingEngineBase;
 import shapes.Shape;
+import shapes.ShapeBase;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import java.util.ArrayList;
 
-public class Paint extends JFrame implements Node{
+
+
+public class Paint extends JFrame implements Node, ActionListener{
     private JButton linesegmentButton;
     private JPanel panel1;
     private JPanel canavas;
@@ -18,6 +26,11 @@ public class Paint extends JFrame implements Node{
     private JButton colorizeButton;
     private JButton deleteButton;
     private JComboBox<String> comboBox1;
+    JMenuBar menuBar;
+    JMenu fileMenu;
+    JMenuItem saveItem;
+    JMenuItem loadItem;
+    JFileChooser fileChooser;
     ArrayList<Integer> values;
     DrawingEngineBase drawingEngine;
     Shape selectedShape;
@@ -28,6 +41,28 @@ public class Paint extends JFrame implements Node{
         setSize(1000, 900);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Drawing Application");
+
+        menuBar = new JMenuBar();
+        fileMenu = new JMenu("File");
+
+        saveItem = new JMenuItem("Save");
+        loadItem = new JMenuItem("Load");
+
+        loadItem.addActionListener((ActionListener) this);
+        saveItem.addActionListener((ActionListener) this);
+
+        loadItem.setMnemonic(KeyEvent.VK_L); // L for load
+        saveItem.setMnemonic(KeyEvent.VK_S); // S for save
+
+        fileMenu.add(saveItem);
+        fileMenu.add(loadItem);
+
+        menuBar.add(fileMenu);
+
+        this.setJMenuBar(menuBar);
+
+        fileChooser = new JFileChooser();
+
         drawingEngine = new DrawingEngineBase();
         canavas.add(drawingEngine);
         drawingEngine.setBackground(Color.white);
@@ -47,6 +82,7 @@ public class Paint extends JFrame implements Node{
             }
             this.selectedShape=selectShape;
         });
+
 
         linesegmentButton.addActionListener(e -> {
             values = new ArrayList<>();
@@ -78,6 +114,9 @@ public class Paint extends JFrame implements Node{
             triangleData.setVisible(true);
 
         });
+
+
+
 
         circleButton.addActionListener(e -> {
             values = new ArrayList<>();
@@ -127,6 +166,11 @@ public class Paint extends JFrame implements Node{
 
         });
 
+
+
+
+
+
         addWindowListener(new WindowListener() {
 
             @Override
@@ -174,6 +218,57 @@ public class Paint extends JFrame implements Node{
 
     }
 
+    private void saveJSONFile(String fileName)
+    {
+        JSONArray jsonShapes = new JSONArray();
+
+        for (Shape shape : drawingEngine.getShapes())
+        {
+            JSONObject jsonObject = ((ShapeBase) shape).shapeToJson(shape);
+            jsonShapes.add(jsonObject);
+        }
+        try(FileWriter fileWriter = new FileWriter(fileName+".json"))
+        {
+            fileWriter.write(jsonShapes.toJSONString());
+            fileWriter.flush();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void loadJSONFile(String filename)
+    {
+        System.out.println(filename);
+        JSONParser jsonShape = new JSONParser();
+
+        try(FileReader reader = new FileReader(filename))
+        {
+            //Read JSONFile
+            Object object = jsonShape.parse(reader);
+            JSONArray shapeList = (JSONArray) object;
+            System.out.println(shapeList);
+
+            shapeList.forEach(Shape -> parseShapeObject((JSONObject) Shape));
+
+
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private static void parseShapeObject(JSONObject shape)
+    {
+        JSONObject shapeObj = (JSONObject) shape.get("shapes.Circle");
+    }
+
+
+
+
     private void updateCombo(Shape shape) {
         comboBox1.addItem(((ShapeBase)shape).getName_key());
     }
@@ -198,17 +293,45 @@ public class Paint extends JFrame implements Node{
     public void setParent(Node node) {
 
     }
-    private  class Click extends MouseAdapter {
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == loadItem)
+        {
+            System.out.println("loadItem");
+            int response =   fileChooser.showOpenDialog( null); // select file to open
+            if(response == JFileChooser.APPROVE_OPTION)
+            {
+                loadJSONFile(fileChooser.getSelectedFile().getPath());
+
+            }
+
+
+
+        } else if (e.getSource() == saveItem) {
+            System.out.println("saveItem");
+        int response =   fileChooser.showSaveDialog( null); // select file to save
+        if(response == JFileChooser.APPROVE_OPTION)
+        {
+             saveJSONFile(fileChooser.getSelectedFile().getName());
+        }
+
+
+
+        }
+    }
+
+    private  class  Click extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
             selectedShape=null;
-            for (Shape shape : drawingEngine.getShapes()) {
-                if (shape.contains(e.getPoint())) {
-                    comboBox1.setSelectedItem(((ShapeBase)shape).getName_key());
-                    selectedShape=shape;
-                    selectedShape.setDraggingPoint(e.getPoint());
+                for (Shape shape : drawingEngine.getShapes()) {
+                    if (shape.contains(e.getPoint())) {
+                        comboBox1.setSelectedItem(((ShapeBase)shape).getName_key());
+                        selectedShape=shape;
+                        selectedShape.setDraggingPoint(e.getPoint());
+                    }
                 }
-            }
         }
     }
     private  class Drag extends MouseMotionAdapter{

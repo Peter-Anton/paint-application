@@ -1,5 +1,7 @@
 package shapes;
 
+import org.json.simple.JSONObject;
+
 import java.awt.*;
 
 public class Rectangle extends ShapeBase{
@@ -36,4 +38,33 @@ public class Rectangle extends ShapeBase{
         point.y+= (getPosition().y-dragPoint.y);
         setPosition(point);
     }
+
+    public  JSONObject shapeToJson(Rectangle r)
+    {
+        JSONObject rectangle = new JSONObject();
+        rectangle.put("position",r.getPosition());
+        rectangle.put("width",r.width);
+        rectangle.put("height",r.height);
+        rectangle.put("color",r.getColor());
+        rectangle.put("fillColor",r.getFillColor());
+
+        JSONObject rectangleObj = new JSONObject();
+        rectangleObj.put("Rectangle",rectangle);
+        return rectangleObj;
+    }
+    public static Rectangle parseShapeObject(JSONObject shape)
+    {
+        JSONObject shapeObj = (JSONObject) shape.get("Rectangle");
+        Rectangle rectangle = new Rectangle();
+        rectangle.setPosition((Point) shapeObj.get("position"));
+        rectangle.setColor((Color) shapeObj.get("color"));
+        rectangle.setFillColor((Color) shapeObj.get("fillColor"));
+        return rectangle;
+    }
+
+    @Override
+    public JSONObject shapeToJson(Shape shape) {
+        return null;
+    }
+
 }
