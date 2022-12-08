@@ -68,31 +68,33 @@ public class Triangle extends ShapeBase{
     }
 
 
-    public static Triangle parseShapeObject(JSONObject shape)
+    public  Triangle parseShapeObject(JSONObject shape)
     {
-        JSONObject shapeObj = (JSONObject) shape.get("Triangle");
-        Triangle triangle = new Triangle();
-        triangle.setPosition((Point) shapeObj.get("position"));
-        triangle.point2 = (Point) shapeObj.get("point2");
-        triangle.point3 = (Point) shapeObj.get("point3");
-        triangle.setColor((Color) shapeObj.get("color"));
-        triangle.setFillColor((Color) shapeObj.get("fillColor"));
 
-        return triangle;
+        super.parseShapeObject(shape);
+        Point point2  = new Point();
+        point2.x = ((Long) shape.get("point2x")).intValue();
+        point2.y = ((Long) shape.get("point2y")).intValue();
+        this.point2 = (Point) shape.get("point2");
+        Point point3  = new Point();
+        point3.x = ((Long) shape.get("point3x")).intValue();
+        point3.y = ((Long) shape.get("point3y")).intValue();
+        this.point3 = (Point) shape.get("point3");
+
+
+        return this;
     }
 
 
-    public JSONObject shapeToJson(Triangle t) {
-        JSONObject triangle = new JSONObject();
-        triangle.put("position",t.getPosition());
-        triangle.put("point2",t.point2);
-        triangle.put("point3",t.point3);
-        triangle.put("color",t.getColor());
-        triangle.put("fillColor",t.getFillColor());
+    public JSONObject shapeToJson() {
+        JSONObject triangle = super.shapeToJson();
+        triangle.put("point2x",this.point2.x);
+        triangle.put("point2y",this.point2.y);
+        triangle.put("point3x",this.point3.x);
+        triangle.put("point3y",this.point3.y);
 
-        JSONObject triangleObj = new JSONObject();
-        triangleObj.put("Triangle",triangle);
-        return triangleObj;
+
+        return triangle;
     }
 
 }

@@ -39,33 +39,25 @@ public class LineSegment extends ShapeBase{
         setPosition(point);
     }
 
-        public  JSONObject shapeToJson(LineSegment l)
-    {
-        JSONObject lineSegment = new JSONObject();
-        lineSegment.put("position",l.getPosition());
-        lineSegment.put("point",l.point);
-        lineSegment.put("color",l.getColor());
-        lineSegment.put("fillColor",l.getFillColor());
 
-        JSONObject lineSegmentObj = new JSONObject();
-        lineSegmentObj.put("LineSegment",lineSegment);
-        return lineSegmentObj;
-    }
-    public static LineSegment parseShapeObject(JSONObject shape)
+    public LineSegment parseShapeObject(JSONObject shape)
     {
-        JSONObject shapeObj = (JSONObject) shape.get("LineSegment");
-        LineSegment lineSegment = new LineSegment();
-        lineSegment.setPosition((Point) shapeObj.get("position"));
-        lineSegment.point = (Point) shapeObj.get("point");
-        lineSegment.setColor((Color) shapeObj.get("color"));
-        lineSegment.setFillColor((Color) shapeObj.get("fillColor"));
+        super.parseShapeObject(shape);
+        Point point  = new Point();
+        point.x = ((Long) shape.get("pointx")).intValue();
+        point.y = ((Long) shape.get("pointy")).intValue();
 
-        return lineSegment;
+
+        return this;
     }
 
     @Override
-    public JSONObject shapeToJson(Shape shape) {
-        return null;
+    public JSONObject shapeToJson() {
+        JSONObject lineSegment = super.shapeToJson();
+        lineSegment.put("pointx",this.point.x);
+        lineSegment.put("pointy",this.point.y);
+
+        return lineSegment;
     }
 
 

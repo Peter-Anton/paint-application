@@ -45,32 +45,24 @@ public Circle(Point point,int radius){
 
 
 
-    public static Circle parseShapeObject(JSONObject shape)
+    public  Circle parseShapeObject(JSONObject shape)
     {
-        JSONObject shapeObj = (JSONObject) shape.get("Circle");
-        Circle circle = new Circle();
-        int radius = (int) shapeObj.get("radius");
-        Point position = (Point) shapeObj.get("position");
-        Color color = (Color) shapeObj.get("color");
-        Color fillColor = (Color) shapeObj.get("fillColor");
-        circle.radius = radius;
-        circle.setColor(color);
-        circle.setFillColor(fillColor);
-        circle.setPosition(position);
-        return circle;
+         super.parseShapeObject(shape);
+
+        int radius = ((Long) shape.get("radius")).intValue();
+
+         this.radius = radius;
+
+        return this;
     }
 
 
-    public JSONObject shapeToJson(Circle c) {
-        JSONObject circle = new JSONObject();
-        circle.put("radius",c.radius);
-        circle.put("position",c.getPosition());
-        circle.put("color",c.getColor());
-        circle.put("fillColor",c.getFillColor());
+    public JSONObject shapeToJson() {
+        JSONObject circle = super.shapeToJson();
+        circle.put("radius",this.radius);
 
-        JSONObject circleObj = new JSONObject();
-        circleObj.put("Circle",circle);
-        return circleObj;
+
+        return circle;
     }
 
 }

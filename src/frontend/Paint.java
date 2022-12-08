@@ -218,16 +218,16 @@ public class Paint extends JFrame implements Node, ActionListener{
 
     }
 
-    private void saveJSONFile(String fileName)
+    private void saveJSONFile(File file)
     {
         JSONArray jsonShapes = new JSONArray();
 
         for (Shape shape : drawingEngine.getShapes())
         {
-            JSONObject jsonObject = ((ShapeBase) shape).shapeToJson(shape);
+            JSONObject jsonObject =  shape.shapeToJson();
             jsonShapes.add(jsonObject);
         }
-        try(FileWriter fileWriter = new FileWriter(fileName+".json"))
+        try(FileWriter fileWriter = new FileWriter(file))
         {
             fileWriter.write(jsonShapes.toJSONString());
             fileWriter.flush();
@@ -237,21 +237,24 @@ public class Paint extends JFrame implements Node, ActionListener{
         }
     }
 
-    private void loadJSONFile(String filename)
+    private void loadJSONFile(File file)
     {
-        System.out.println(filename);
+        System.out.println(file);
         JSONParser jsonShape = new JSONParser();
 
-        try(FileReader reader = new FileReader(filename))
+        try(FileReader reader = new FileReader(file))
         {
             //Read JSONFile
             Object object = jsonShape.parse(reader);
             JSONArray shapeList = (JSONArray) object;
+            System.out.println("wasalt hena");
             System.out.println(shapeList);
 
-            shapeList.forEach(Shape -> parseShapeObject((JSONObject) Shape));
-
-
+            shapeList.forEach(Shape -> {
+                shapes.Shape shapeObject2  = ShapeBase.parseShapeObject2((JSONObject) Shape);
+                drawingEngine.addShape(shapeObject2);
+                this.updateCombo(shapeObject2);
+            });
         } catch (IOException e)
         {
             e.printStackTrace();
@@ -261,15 +264,12 @@ public class Paint extends JFrame implements Node, ActionListener{
 
     }
 
-    private static void parseShapeObject(JSONObject shape)
-    {
-        JSONObject shapeObj = (JSONObject) shape.get("shapes.Circle");
-    }
 
 
 
 
     private void updateCombo(Shape shape) {
+        System.out.println(((ShapeBase)shape).getName_key());
         comboBox1.addItem(((ShapeBase)shape).getName_key());
     }
 
@@ -302,8 +302,9 @@ public class Paint extends JFrame implements Node, ActionListener{
             int response =   fileChooser.showOpenDialog( null); // select file to open
             if(response == JFileChooser.APPROVE_OPTION)
             {
-                loadJSONFile(fileChooser.getSelectedFile().getPath());
+                loadJSONFile(fileChooser.getSelectedFile());
 
+                drawingEngine.refresh();
             }
 
 
@@ -313,7 +314,7 @@ public class Paint extends JFrame implements Node, ActionListener{
         int response =   fileChooser.showSaveDialog( null); // select file to save
         if(response == JFileChooser.APPROVE_OPTION)
         {
-             saveJSONFile(fileChooser.getSelectedFile().getName());
+             saveJSONFile(fileChooser.getSelectedFile());
         }
 
 

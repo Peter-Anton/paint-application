@@ -39,32 +39,22 @@ public class Rectangle extends ShapeBase{
         setPosition(point);
     }
 
-    public  JSONObject shapeToJson(Rectangle r)
-    {
-        JSONObject rectangle = new JSONObject();
-        rectangle.put("position",r.getPosition());
-        rectangle.put("width",r.width);
-        rectangle.put("height",r.height);
-        rectangle.put("color",r.getColor());
-        rectangle.put("fillColor",r.getFillColor());
 
-        JSONObject rectangleObj = new JSONObject();
-        rectangleObj.put("Rectangle",rectangle);
-        return rectangleObj;
-    }
-    public static Rectangle parseShapeObject(JSONObject shape)
+    public Rectangle parseShapeObject(JSONObject shape)
     {
-        JSONObject shapeObj = (JSONObject) shape.get("Rectangle");
-        Rectangle rectangle = new Rectangle();
-        rectangle.setPosition((Point) shapeObj.get("position"));
-        rectangle.setColor((Color) shapeObj.get("color"));
-        rectangle.setFillColor((Color) shapeObj.get("fillColor"));
-        return rectangle;
+        super.parseShapeObject(shape);
+        this.width = ((Long)shape.get("width")).intValue();
+        this.height = ((Long)shape.get("height")).intValue();
+        return this;
     }
 
     @Override
-    public JSONObject shapeToJson(Shape shape) {
-        return null;
+    public JSONObject shapeToJson() {
+        JSONObject rectangle = super.shapeToJson();
+        rectangle.put("width",this.width);
+        rectangle.put("height",this.height);
+
+        return rectangle;
     }
 
 }

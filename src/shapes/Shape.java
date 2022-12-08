@@ -12,4 +12,5 @@ public interface Shape extends Moveable {
      Color getFillColor();
      void draw(Graphics canvas);
 
+     JSONObject shapeToJson();
 }
