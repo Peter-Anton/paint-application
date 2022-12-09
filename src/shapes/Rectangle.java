@@ -1,10 +1,15 @@
 package shapes;
 
+import org.json.simple.JSONObject;
+
 import java.awt.*;
 
 public class Rectangle extends ShapeBase{
     int width;
     int height;
+    public Rectangle(){
+        super(new Point());
+    }
     public Rectangle(Point point,int width,int height){
         super(point);
         this.height=height;
@@ -50,7 +55,47 @@ public class Rectangle extends ShapeBase{
     }
 
     @Override
-    public void resize(Point CornerPoint, Point dragedPoint) {
-        //TODO:tommorow
+    public Point resize(Point cornerPoint, Point dragedPoint) {
+        Point[] points=getPoint();
+        if (points[0].equals(cornerPoint)) {
+            width+=(getPosition().x-dragedPoint.x);
+            height+=(getPosition().y-dragedPoint.y);
+            setPosition(dragedPoint);
+            return getPoint()[0];
+        }
+        if (points[1].equals(cornerPoint)) {
+            width+=(getPosition().x-dragedPoint.x);
+            height=(getPosition().y-dragedPoint.y);
+            return getPoint()[1];
+        }
+        if (points[2].equals(cornerPoint)) {
+            width=(getPosition().x-dragedPoint.x);
+            height+=(getPosition().y-dragedPoint.y);
+            return getPoint()[2];
+
+        }
+        if (points[3].equals(cornerPoint)) {
+            width=(getPosition().x-dragedPoint.x);
+            height+=(getPosition().y-dragedPoint.y);
+            return getPoint()[3];
+        }
+        return null;
+
+    }
+
+    public void parseShapeObject(JSONObject shape)
+    {
+        super.parseShapeObject(shape);
+        this.width = ((Long)shape.get("width")).intValue();
+        this.height = ((Long)shape.get("height")).intValue();
+    }
+
+    @Override
+    public JSONObject shapeToJson() {
+        JSONObject rectangle = super.shapeToJson();
+        rectangle.put("width",this.width);
+        rectangle.put("height",this.height);
+
+        return rectangle;
     }
 }

@@ -1,12 +1,20 @@
 package frontend;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import shapes.Shape;
 import shapes.ShapeBase;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-public class Paint extends JFrame implements Node{
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+public class Paint extends JFrame implements Node, ActionListener{
     private JButton linesegmentButton;
     private JPanel panel1;
     private JPanel canavas;
@@ -17,6 +25,11 @@ public class Paint extends JFrame implements Node{
     private JButton deleteButton;
     private JComboBox<String> comboBox1;
     private JButton copyButton;
+    JMenuBar menuBar;
+    JMenu fileMenu;
+    JMenuItem saveItem;
+    JMenuItem loadItem;
+    JFileChooser fileChooser;
     DrawingEngineBase drawingEngine;
     protected Shape selectedShape;
     protected Shape copyShape;
@@ -28,6 +41,27 @@ public class Paint extends JFrame implements Node{
         setSize(1000, 900);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Drawing Application");
+        menuBar = new JMenuBar();
+        fileMenu = new JMenu("File");
+
+        saveItem = new JMenuItem("Save");
+        loadItem = new JMenuItem("Load");
+
+        loadItem.addActionListener(this);
+        saveItem.addActionListener(this);
+
+        loadItem.setMnemonic(KeyEvent.VK_L); // L for load
+        saveItem.setMnemonic(KeyEvent.VK_S); // S for save
+
+        fileMenu.add(saveItem);
+        fileMenu.add(loadItem);
+
+        menuBar.add(fileMenu);
+
+        this.setJMenuBar(menuBar);
+
+        fileChooser = new JFileChooser();
+
         drawingEngine = new DrawingEngineBase();
         canavas.add(drawingEngine);
         drawingEngine.setBackground(Color.white);
@@ -48,6 +82,7 @@ public class Paint extends JFrame implements Node{
             }
             this.selectedShape=selectShape;
         });
+
 
         linesegmentButton.addActionListener(e -> {
             LineData lineData=new LineData();
@@ -104,6 +139,7 @@ public class Paint extends JFrame implements Node{
             Shape shape = searchShape(String.valueOf(comboBox1.getSelectedItem()));
             if (shape != null) {
                 drawingEngine.removeShape(shape);
+                drawingEngine.setShape(null);
                 drawingEngine.refresh();
                 comboBox1.removeItem(comboBox1.getSelectedItem());
             }
@@ -120,7 +156,6 @@ public class Paint extends JFrame implements Node{
 
 
         });
-
         addWindowListener(new WindowListener() {
 
             @Override
@@ -186,6 +221,52 @@ public class Paint extends JFrame implements Node{
         comboBox1.addItem(shape.toString());
     }
 
+    private void saveJSONFile(File file)
+    {
+        JSONArray jsonShapes = new JSONArray();
+
+        for (Shape shape : drawingEngine.getShapes())
+        {
+            JSONObject jsonObject =  shape.shapeToJson();
+            jsonShapes.add(jsonObject);
+        }
+        try(FileWriter fileWriter = new FileWriter(file))
+        {
+            fileWriter.write(jsonShapes.toJSONString());
+            fileWriter.flush();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    private void loadJSONFile(File file)
+    {
+        System.out.println(file);
+        JSONParser jsonShape = new JSONParser();
+
+        try(FileReader reader = new FileReader(file))
+        {
+            //Read JSONFile
+            Object object = jsonShape.parse(reader);
+            JSONArray shapeList = (JSONArray) object;
+            System.out.println("wasalt hena");
+            System.out.println(shapeList);
+
+            shapeList.forEach(Shape -> {
+                shapes.Shape shapeObject2  = ShapeBase.parseShapeObject2((JSONObject) Shape);
+                drawingEngine.addShape(shapeObject2);
+                this.updateCombo(shapeObject2);
+            });
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
     private Shape searchShape(String Key) {
         Shape[] shapes = drawingEngine.getShapes();
         for (Shape shap : shapes) {
@@ -206,11 +287,41 @@ public class Paint extends JFrame implements Node{
     public void setParent(Node node) {
 
     }
-    private  class Click extends MouseAdapter {
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == loadItem)
+        {
+            System.out.println("loadItem");
+            int response =   fileChooser.showOpenDialog( null); // select file to open
+            if(response == JFileChooser.APPROVE_OPTION)
+            {
+                loadJSONFile(fileChooser.getSelectedFile());
+
+                drawingEngine.refresh();
+            }
+
+
+
+        } else if (e.getSource() == saveItem) {
+            System.out.println("saveItem");
+            int response =   fileChooser.showSaveDialog( null); // select file to save
+            if(response == JFileChooser.APPROVE_OPTION)
+            {
+                saveJSONFile(fileChooser.getSelectedFile());
+            }
+
+
+
+        }
+    }
+
+    private  class  Click extends MouseAdapter {
+
+
         @Override
         public void mouseReleased(MouseEvent e) {
             resize=null;
-
         }
 
         @Override
@@ -226,7 +337,7 @@ public class Paint extends JFrame implements Node{
                 }
             }
             drawingEngine.refresh();
-        }
+              }
     }
     private  class Drag extends MouseMotionAdapter{
         @Override
@@ -234,17 +345,20 @@ public class Paint extends JFrame implements Node{
         {
             if (selectedShape==null)
                 return;
-
-
+            if (resize==null){
             selectedShape.moveTo(e.getPoint());
-                selectedShape.setDraggingPoint(e.getPoint());
+            selectedShape.setDraggingPoint(e.getPoint());
+            drawingEngine.refresh();
+            }
             for (Point point1: selectedShape.getPoint()) {
-                if (point1.distance(e.getPoint())<=5)
+                if (point1.distance(e.getPoint())<=8)
                 {
                     resize=point1;
-                    selectedShape.resize(resize,e.getPoint());
                 }
             }
+            Point selectedPoint=selectedShape.resize(resize,e.getPoint());
+            if (selectedPoint!=null)
+                resize=selectedPoint;
             drawingEngine.refresh();
         }
     }

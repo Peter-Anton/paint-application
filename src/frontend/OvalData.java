@@ -1,7 +1,6 @@
 package frontend;
 
 import shapes.Oval;
-
 import shapes.Shape;
 
 import javax.swing.*;

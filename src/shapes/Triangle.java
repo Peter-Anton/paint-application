@@ -1,12 +1,14 @@
 package shapes;
-
+import org.json.simple.JSONObject;
 import java.awt.*;
-
 public class Triangle extends ShapeBase{
   Point point2;
   Point point3;
     int [] y;
     int[] x;
+    public Triangle(){
+        super(new Point());
+    }
     public Triangle(Point point1,Point point2,Point point3){
         super(point1);
        this.point2=point2;
@@ -73,16 +75,43 @@ public class Triangle extends ShapeBase{
     }
 
     @Override
-    public void resize(Point cornerpoint, Point dragedPoint) {
+    public Point resize(Point cornerpoint, Point dragedPoint) {
         Point[] points=getPoint();
         if (points[0].equals(cornerpoint)) {
             setPosition(dragedPoint);
+            return getPoint()[0];
         }
         if (points[1].equals(cornerpoint)) {
              point2=dragedPoint;
+             return getPoint()[1];
+
         }
         if (points[2].equals(cornerpoint)) {
             point3=dragedPoint;
+            return getPoint()[2];
         }
+        return null;
     }
+    public JSONObject shapeToJson() {
+        JSONObject triangle = super.shapeToJson();
+        triangle.put("point2x",this.point2.x);
+        triangle.put("point2y",this.point2.y);
+        triangle.put("point3x",this.point3.x);
+        triangle.put("point3y",this.point3.y);
+        return triangle;
+    }
+    public void parseShapeObject(JSONObject shape)
+    {
+
+        super.parseShapeObject(shape);
+        Point point2  = new Point();
+        point2.x = ((Long) shape.get("point2x")).intValue();
+        point2.y = ((Long) shape.get("point2y")).intValue();
+        this.point2 = (Point) shape.get("point2");
+        Point point3  = new Point();
+        point3.x = ((Long) shape.get("point3x")).intValue();
+        point3.y = ((Long) shape.get("point3y")).intValue();
+        this.point3 = (Point) shape.get("point3");
+    }
+
 }

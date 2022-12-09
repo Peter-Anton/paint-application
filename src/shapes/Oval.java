@@ -1,10 +1,14 @@
 package shapes;
 
 import java.awt.*;
-
+import org.json.simple.JSONObject;
 public class Oval extends ShapeBase{
 private int height,width;
+public Oval(){
+    super(new Point());
+};
 public Oval(Point point, int height, int width){
+
     super(point);
     this.height=height;
     this.width=width;
@@ -52,7 +56,52 @@ public Oval(Point point, int height, int width){
     }
 
     @Override
-    public void resize(Point CornerPoint, Point dragedPoint) {
-        //TODo:Tommorow
+    public Point resize(Point cornerPoint, Point dragedPoint) {
+        Point[] points=getPoint();
+        if (points[0].equals(cornerPoint)) {
+            width+=(getPosition().x-dragedPoint.x);
+            height+=(getPosition().y-dragedPoint.y);
+            setPosition(dragedPoint);
+            return getPoint()[0];
+        }
+        if (points[1].equals(cornerPoint)) {
+            width+=(getPosition().x-dragedPoint.x);
+            height=(getPosition().y-dragedPoint.y);
+            return getPoint()[1];
+
+        }
+        if (points[2].equals(cornerPoint)) {
+            width+=(cornerPoint.x-dragedPoint.x);
+            height+=(getPosition().y-dragedPoint.y);
+            return getPoint()[2];
+
+        }
+        if (points[3].equals(cornerPoint)) {
+            width=(getPosition().x-dragedPoint.x);
+            height+=(getPosition().y-dragedPoint.y);
+            return getPoint()[3];
+
+        }
+        return null;
+    }
+
+    public void parseShapeObject(JSONObject shape)
+    {
+        super.parseShapeObject(shape);
+
+        int height = ((Long) shape.get("height")).intValue();
+        int width = ((Long) shape.get("width")).intValue();
+
+        this.height = height;
+        this.width=width;
+
+    }
+
+
+    public JSONObject shapeToJson() {
+        JSONObject oval = super.shapeToJson();
+        oval.put("height",this.height);
+        oval.put("width",this.width);
+        return oval;
     }
 }

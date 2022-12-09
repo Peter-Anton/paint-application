@@ -5,7 +5,6 @@ import shapes.Triangle;
 
 import javax.swing.*;
 import java.awt.*;
-
 import java.util.concurrent.CompletableFuture;
 
 public class TriangleData extends JFrame implements Node {

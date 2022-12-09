@@ -1,7 +1,11 @@
 package shapes;
+import org.json.simple.JSONObject;
 import java.awt.*;
 public class LineSegment extends ShapeBase{
     Point point;
+    public LineSegment(){
+        super(new Point());
+    }
 
     public LineSegment(Point point1,Point point2){
         super(point1);
@@ -19,7 +23,7 @@ public class LineSegment extends ShapeBase{
         Point pStart=new Point(getPosition().x, getPosition().y);
         double lineLength=pStart.distance(this.point);
         double lengthFromPoint=pStart.distance(point)+this.point.distance(point);
-        return Math.abs(lengthFromPoint-lineLength)<=2;
+        return Math.abs(lengthFromPoint-lineLength) <= 1;
     }
 
     @Override
@@ -33,8 +37,26 @@ public class LineSegment extends ShapeBase{
         this.point.x+=x;
         this.point.y+=y;
         setPosition(point);
+    }
 
 
+    public void parseShapeObject(JSONObject shape)
+    {
+        super.parseShapeObject(shape);
+        Point point  = new Point();
+        point.x = ((Long) shape.get("pointx")).intValue();
+        point.y = ((Long) shape.get("pointy")).intValue();
+
+
+    }
+
+    @Override
+    public JSONObject shapeToJson() {
+        JSONObject lineSegment = super.shapeToJson();
+        lineSegment.put("pointx",this.point.x);
+        lineSegment.put("pointy",this.point.y);
+
+        return lineSegment;
     }
 
     @Override
@@ -48,13 +70,16 @@ public class LineSegment extends ShapeBase{
     }
 
     @Override
-    public void resize(Point cornerPoint, Point dragedPoint) {
+    public Point resize(Point cornerPoint, Point dragedPoint) {
         Point[] points=getPoint();
         if (points[0].equals(cornerPoint)) {
             setPosition(dragedPoint);
+            return getPoint()[0];
         }
         if (points[1].equals(cornerPoint)) {
             point=dragedPoint;
+            return getPoint()[1];
         }
+        return null;
     }
 }
