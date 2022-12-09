@@ -11,5 +11,4 @@ public interface Shape extends Moveable,Resize,Cloneable {
      void setFillColor(Color color);
      Color getFillColor();
      void draw(Graphics canvas);
-     JSONObject shapeToJson();
 }

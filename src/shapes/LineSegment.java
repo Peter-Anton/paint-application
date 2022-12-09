@@ -46,8 +46,7 @@ public class LineSegment extends ShapeBase{
         Point point  = new Point();
         point.x = ((Long) shape.get("pointx")).intValue();
         point.y = ((Long) shape.get("pointy")).intValue();
-
-
+        this.point=point;
     }
 
     @Override

@@ -102,16 +102,16 @@ public class Triangle extends ShapeBase{
     }
     public void parseShapeObject(JSONObject shape)
     {
-
         super.parseShapeObject(shape);
         Point point2  = new Point();
         point2.x = ((Long) shape.get("point2x")).intValue();
         point2.y = ((Long) shape.get("point2y")).intValue();
-        this.point2 = (Point) shape.get("point2");
+        this.point2=point2;
         Point point3  = new Point();
         point3.x = ((Long) shape.get("point3x")).intValue();
         point3.y = ((Long) shape.get("point3y")).intValue();
-        this.point3 = (Point) shape.get("point3");
+        this.point3=point3;
+
     }
 
 }

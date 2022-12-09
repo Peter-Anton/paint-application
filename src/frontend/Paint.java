@@ -227,7 +227,7 @@ public class Paint extends JFrame implements Node, ActionListener{
 
         for (Shape shape : drawingEngine.getShapes())
         {
-            JSONObject jsonObject =  shape.shapeToJson();
+            JSONObject jsonObject =  ((ShapeBase)shape).shapeToJson();
             jsonShapes.add(jsonObject);
         }
         try(FileWriter fileWriter = new FileWriter(file))
@@ -294,10 +294,16 @@ public class Paint extends JFrame implements Node, ActionListener{
         {
             System.out.println("loadItem");
             int response =   fileChooser.showOpenDialog( null); // select file to open
+            if (drawingEngine.getShapes()!=null) {
+                for (Shape shape : drawingEngine.getShapes()) {
+                    drawingEngine.removeShape(shape);
+                }
+                comboBox1.removeAllItems();
+                drawingEngine.refresh();
+            }
             if(response == JFileChooser.APPROVE_OPTION)
             {
                 loadJSONFile(fileChooser.getSelectedFile());
-
                 drawingEngine.refresh();
             }
 
@@ -351,7 +357,7 @@ public class Paint extends JFrame implements Node, ActionListener{
             drawingEngine.refresh();
             }
             for (Point point1: selectedShape.getPoint()) {
-                if (point1.distance(e.getPoint())<=8)
+                if (point1.distance(e.getPoint())<=10)
                 {
                     resize=point1;
                 }

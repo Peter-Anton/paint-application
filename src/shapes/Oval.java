@@ -77,10 +77,9 @@ public Oval(Point point, int height, int width){
 
         }
         if (points[3].equals(cornerPoint)) {
-            width=(getPosition().x-dragedPoint.x);
-            height+=(getPosition().y-dragedPoint.y);
+            this.width=Math.abs(width+(dragedPoint.x-points[3].x));
+            this.height=Math.abs(height+(dragedPoint.y-points[3].y));
             return getPoint()[3];
-
         }
         return null;
     }

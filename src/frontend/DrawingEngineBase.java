@@ -39,9 +39,10 @@ public class DrawingEngineBase extends JPanel implements DrawingEngine  {
 
             if (selctedShape!=null){
                 for (Point point:selctedShape.getPoint()) {
-
+                    graphics.setColor(Color.BLACK);
                     graphics.fillOval(point.x-5,point.y-5,15,15);
             }
+
 
             }
         }

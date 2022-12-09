@@ -58,25 +58,25 @@ public class Rectangle extends ShapeBase{
     public Point resize(Point cornerPoint, Point dragedPoint) {
         Point[] points=getPoint();
         if (points[0].equals(cornerPoint)) {
-            width+=(getPosition().x-dragedPoint.x);
-            height+=(getPosition().y-dragedPoint.y);
+            width=Math.abs(width+(getPosition().x-dragedPoint.x));
+            height=Math.abs(height+(getPosition().y-dragedPoint.y));
             setPosition(dragedPoint);
             return getPoint()[0];
         }
-        if (points[1].equals(cornerPoint)) {
-            width+=(getPosition().x-dragedPoint.x);
-            height=(getPosition().y-dragedPoint.y);
+        if (points[2].equals(cornerPoint)) {
+            this.width=Math.abs(width+(points[2].x-dragedPoint.x));
+            this.height=Math.abs(height+(dragedPoint.y-points[2].y));
             return getPoint()[1];
         }
-        if (points[2].equals(cornerPoint)) {
-            width=(getPosition().x-dragedPoint.x);
-            height+=(getPosition().y-dragedPoint.y);
+        if (points[1].equals(cornerPoint)) {
+            this.width=Math.abs(width+(dragedPoint.x-points[1].x));
+            this.height+=Math.abs(height+(points[1].y-dragedPoint.y));
             return getPoint()[2];
 
         }
         if (points[3].equals(cornerPoint)) {
-            width=(getPosition().x-dragedPoint.x);
-            height+=(getPosition().y-dragedPoint.y);
+            this.width=Math.abs(width+(dragedPoint.x-points[3].x));
+            this.height=Math.abs(height+(dragedPoint.y-points[3].y));
             return getPoint()[3];
         }
         return null;
