@@ -63,14 +63,15 @@ public class Rectangle extends ShapeBase{
             setPosition(dragedPoint);
             return getPoint()[0];
         }
-        if (points[2].equals(cornerPoint)) {
-            this.width=Math.abs(width+(points[2].x-dragedPoint.x));
-            this.height=Math.abs(height+(dragedPoint.y-points[2].y));
+        if (points[1].equals(cornerPoint)) {
+            this.width=Math.abs(width+(cornerPoint.x-dragedPoint.x));
+            this.height=Math.abs(height+(dragedPoint.y-cornerPoint.y));
+
             return getPoint()[1];
         }
-        if (points[1].equals(cornerPoint)) {
-            this.width=Math.abs(width+(dragedPoint.x-points[1].x));
-            this.height+=Math.abs(height+(points[1].y-dragedPoint.y));
+        if (points[2].equals(cornerPoint)) {
+            this.width=Math.abs(width+(dragedPoint.x-cornerPoint.x));
+            this.height=Math.abs(height+(cornerPoint.y-dragedPoint.y));
             return getPoint()[2];
 
         }

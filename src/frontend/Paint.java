@@ -49,9 +49,8 @@ public class Paint extends JFrame implements Node, ActionListener{
 
         loadItem.addActionListener(this);
         saveItem.addActionListener(this);
-
-        loadItem.setMnemonic(KeyEvent.VK_L); // L for load
-        saveItem.setMnemonic(KeyEvent.VK_S); // S for save
+        loadItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,InputEvent.CTRL_MASK));
+        saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,InputEvent.CTRL_MASK));
 
         fileMenu.add(saveItem);
         fileMenu.add(loadItem);
