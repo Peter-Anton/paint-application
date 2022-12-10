@@ -23,7 +23,7 @@ public class LineSegment extends ShapeBase{
         Point pStart=new Point(getPosition().x, getPosition().y);
         double lineLength=pStart.distance(this.point);
         double lengthFromPoint=pStart.distance(point)+this.point.distance(point);
-        return Math.abs(lengthFromPoint-lineLength) <= 1;
+        return Math.abs(lengthFromPoint-lineLength) <= 2;
     }
 
     @Override
@@ -39,6 +39,13 @@ public class LineSegment extends ShapeBase{
         setPosition(point);
     }
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+
+        LineSegment lineSegment=(LineSegment) super.clone();
+        lineSegment.point=new Point(this.point);
+        return lineSegment;
+    }
 
     public void parseShapeObject(JSONObject shape)
     {

@@ -1,6 +1,8 @@
 package shapes;
 import org.json.simple.JSONObject;
 import java.awt.*;
+import java.util.Arrays;
+
 public class Triangle extends ShapeBase{
   Point point2;
   Point point3;
@@ -71,6 +73,17 @@ public class Triangle extends ShapeBase{
     @Override
     public Point[] getPoint() {
         return new Point[]{getPosition(),point2,point3};
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Triangle triangle= (Triangle) super.clone();
+        triangle.point2=new Point(this.point2);
+        triangle.point3=new Point(this.point3);
+        triangle.x= Arrays.copyOf(x, x.length);
+        triangle.y= Arrays.copyOf(y, y.length);
+        return triangle;
+
     }
 
     @Override

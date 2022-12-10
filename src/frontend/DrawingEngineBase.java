@@ -14,7 +14,6 @@ public class DrawingEngineBase extends JPanel implements DrawingEngine  {
     @Override
     public void addShape(shapes.Shape shape) {
         shapes.add((ShapeBase) shape);
-        refresh();
     }
 
     @Override
