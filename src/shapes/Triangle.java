@@ -55,7 +55,6 @@ public class Triangle extends ShapeBase{
         return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
     }
 
-
     @Override
     public void draw(Graphics canvas) {
         int[] x={getPosition().x,point2.x,point3.x};
@@ -78,7 +77,7 @@ public class Triangle extends ShapeBase{
     public Point resize(Point cornerpoint, Point dragedPoint) {
         Point[] points=getPoint();
         if (points[0].equals(cornerpoint)) {
-            setPosition(dragedPoint);
+            super.setPosition(dragedPoint);
             return getPoint()[0];
         }
         if (points[1].equals(cornerpoint)) {

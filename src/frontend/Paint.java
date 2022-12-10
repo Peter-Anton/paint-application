@@ -32,7 +32,7 @@ public class Paint extends JFrame implements Node, ActionListener{
     JFileChooser fileChooser;
     DrawingEngineBase drawingEngine;
     protected Shape selectedShape;
-    protected Shape copyShape;
+    protected ShapeBase copyShape;
     Point resize;
 
     public Paint() {
@@ -201,17 +201,18 @@ public class Paint extends JFrame implements Node, ActionListener{
         });
 
         copyButton.addActionListener(e -> {
-            try {
-                copyShape= (Shape) ((ShapeBase)selectedShape).clone();
-                copyShape.toString();
-                drawingEngine.addShape(copyShape);
-                updateCombo(copyShape);
-                drawingEngine.refresh();
+            if (selectedShape!=null&&comboBox1.getItemCount()!=0){
+                try {
+                    copyShape = (ShapeBase) ((ShapeBase) selectedShape).clone();
+                    copyShape.toString();
+                    drawingEngine.addShape(copyShape);
+                    updateCombo(copyShape);
+                    drawingEngine.refresh();
 
-            } catch (CloneNotSupportedException ex) {
-                throw new RuntimeException(ex);
+                } catch (CloneNotSupportedException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
-
         });
     }
 

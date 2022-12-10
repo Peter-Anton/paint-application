@@ -72,7 +72,7 @@ public class LineSegment extends ShapeBase{
     public Point resize(Point cornerPoint, Point dragedPoint) {
         Point[] points=getPoint();
         if (points[0].equals(cornerPoint)) {
-            setPosition(dragedPoint);
+            super.setPosition(dragedPoint);
             return getPoint()[0];
         }
         if (points[1].equals(cornerPoint)) {
