@@ -59,20 +59,21 @@ public Oval(Point point, int height, int width){
     public Point resize(Point cornerPoint, Point dragedPoint) {
         Point[] points=getPoint();
         if (points[0].equals(cornerPoint)) {
-            width+=(getPosition().x-dragedPoint.x);
-            height+=(getPosition().y-dragedPoint.y);
+            width=Math.abs(width+(getPosition().x-dragedPoint.x));
+            height=Math.abs(height+(getPosition().y-dragedPoint.y));
             setPosition(dragedPoint);
             return getPoint()[0];
         }
         if (points[1].equals(cornerPoint)) {
-            width+=(getPosition().x-dragedPoint.x);
-            height=(getPosition().y-dragedPoint.y);
+            this.height=getPosition().y+height-dragedPoint.y;
+            this.width=dragedPoint.x-getPosition().x;
+            setPosition(new Point(getPosition().x,dragedPoint.y));
             return getPoint()[1];
-
         }
         if (points[2].equals(cornerPoint)) {
-            width+=(cornerPoint.x-dragedPoint.x);
-            height+=(getPosition().y-dragedPoint.y);
+            this.height=dragedPoint.y-getPosition().y;
+            this.width=getPosition().x+width-dragedPoint.x;
+            setPosition(new Point(dragedPoint.x,getPosition().y));
             return getPoint()[2];
 
         }
@@ -82,7 +83,9 @@ public Oval(Point point, int height, int width){
             return getPoint()[3];
         }
         return null;
+
     }
+
 
     public void parseShapeObject(JSONObject shape)
     {
