@@ -245,7 +245,6 @@ public class Paint extends JFrame implements Node, ActionListener{
     {
         System.out.println(file);
         JSONParser jsonShape = new JSONParser();
-
         try(FileReader reader = new FileReader(file))
         {
             //Read JSONFile
@@ -293,25 +292,27 @@ public class Paint extends JFrame implements Node, ActionListener{
         if(e.getSource() == loadItem)
         {
             System.out.println("loadItem");
+            fileChooser.setCurrentDirectory(new File("Paint_GUi\\src\\jason file"));
             int response =   fileChooser.showOpenDialog( null); // select file to open
+           if (response!=JFileChooser.CANCEL_OPTION){
             if (drawingEngine.getShapes()!=null) {
                 for (Shape shape : drawingEngine.getShapes()) {
                     drawingEngine.removeShape(shape);
                 }
                 comboBox1.removeAllItems();
-                drawingEngine.refresh();
+                drawingEngine.refresh();}
             }
             if(response == JFileChooser.APPROVE_OPTION)
             {
+                fileChooser.setCurrentDirectory(new File("D\\"));
                 loadJSONFile(fileChooser.getSelectedFile());
                 drawingEngine.refresh();
             }
-
-
-
+            drawingEngine.refresh();
         } else if (e.getSource() == saveItem) {
             System.out.println("saveItem");
             int response =   fileChooser.showSaveDialog( null); // select file to save
+            fileChooser.setCurrentDirectory(new File("Paint_GUi\\src\\jason file"));
             if(response == JFileChooser.APPROVE_OPTION)
             {
                 saveJSONFile(fileChooser.getSelectedFile());
