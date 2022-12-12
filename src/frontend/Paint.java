@@ -321,6 +321,7 @@ public class Paint extends JFrame implements Node, ActionListener{
 
 
         }
+        drawingEngine.refresh();
     }
 
     private  class  Click extends MouseAdapter {
@@ -358,7 +359,7 @@ public class Paint extends JFrame implements Node, ActionListener{
             drawingEngine.refresh();
             }
             for (Point point1: selectedShape.getPoint()) {
-                if (point1.distance(e.getPoint())<=5)
+                if (point1.distance(e.getPoint())<=10)
                 {
                     resize=point1;
                 }
